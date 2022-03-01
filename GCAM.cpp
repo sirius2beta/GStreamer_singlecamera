@@ -64,18 +64,6 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			data->streaming_started = false;
 			cout<<"quit..."<<endl;
 		}
-	}else if(cap.compare(string("SELECT"))){
-		string cameraID(raw_msg,space_pos+1,raw_msg.length()-space_pos-1);
-		if(cameraID.compare(string("A"))){
-			if(data.currentCameraID != 1){
-				gst_element_set_state (data->pipeline, GST_STATE_NULL);
-				data->pipeline = gst_parse_launch(gst_command.c_str(), NULL);
-				gst_element_set_state (data->pipeline, GST_STATE_PLAYING);
-			}
-		}else if(cameraID.compare(string("B"))){
-		}else if(cameraID.compare(string("C"))){
-		}else if(cameraID.compare(string("D"))){
-		}
 	}else{
 		cout<<"No matching cmd:"<<cap<<endl;
 	}
@@ -100,7 +88,7 @@ int main(int argc, char *argv[]) {
 	mosquitto_connect_callback_set(mosq, on_connect);
 	mosquitto_message_callback_set(mosq, on_message);
 	
-	rc = mosquitto_connect(mosq, "192.168.0.104", 1883, 10);
+	rc = mosquitto_connect(mosq, "10.8.0.1", 1883, 10);
 	if(rc) {
 		cout<<"Could not connect to Broker with return code %d\n"<<rc<<endl;
 		return -1;
