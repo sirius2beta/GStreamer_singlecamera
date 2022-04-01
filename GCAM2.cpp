@@ -15,10 +15,10 @@ typedef struct _CustomData {
 	
 } CustomData;
 
-void* heartBeat(void* data){
-  int rc = mosquitto_connect(static_cast<struct mosquitto*>data, "114.33.252.156", 1883, 10);
+void* heartBeat(struct mosquitto* data){
+  int rc = mosquitto_connect(data, "114.33.252.156", 1883, 10);
   string msg("HEARTBEAT CHARLIE")
-  mosquitto_publish(static_cast<struct mosquitto*>data, NULL, "test/t1", msg.length()+1, msg.toStdString().c_str(), 1, false);
+  mosquitto_publish(data, NULL, "test/t1", msg.length()+1, msg.toStdString().c_str(), 1, false);
 }
 
 void on_connect(struct mosquitto *mosq, void *obj, int rc) {
