@@ -19,7 +19,7 @@ void* heartBeat(void* data){
 	struct mosquitto* mosq = (struct mosquitto*)data;
   int rc = mosquitto_connect(mosq, "114.33.252.156", 1883, 10);
   string msg("HEARTBEAT CHARLIE");
-  mosquitto_publish(mosq, NULL, "test/t1", msg.length()+1, msg.toStdString().c_str(), 1, false);
+  mosquitto_publish(mosq, NULL, "test/t1", msg.length()+1, msg.c_str(), 1, false);
 }
 
 void on_connect(struct mosquitto *mosq, void *obj, int rc) {
