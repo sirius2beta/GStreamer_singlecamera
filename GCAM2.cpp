@@ -21,7 +21,7 @@ typedef struct _CustomData {
 void* heartBeat(void* data){
 	while(terminate_int == 0){
 		struct mosquitto* mosq = (struct mosquitto*)data;
-  		int rc = mosquitto_connect(mosq, "114.33.252.156", 1883, 10);
+  		int rc = mosquitto_connect(mosq, "114.33.252.156", 1883, 2);
   		string msg("HEARTBEAT CHARLIE");
   		mosquitto_publish(mosq, NULL, "test/t1", msg.length()+1, msg.c_str(), 1, false);
 		cout<<"msg sent !"<<endl;
