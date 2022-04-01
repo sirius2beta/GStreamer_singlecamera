@@ -4,6 +4,7 @@
 #include <mosquitto.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <sys/time.h>
 
 using namespace std;
 
@@ -16,10 +17,14 @@ typedef struct _CustomData {
 } CustomData;
 
 void* heartBeat(void* data){
-	struct mosquitto* mosq = (struct mosquitto*)data;
-  int rc = mosquitto_connect(mosq, "114.33.252.156", 1883, 10);
-  string msg("HEARTBEAT CHARLIE");
-  mosquitto_publish(mosq, NULL, "test/t1", msg.length()+1, msg.c_str(), 1, false);
+	while(1){
+		struct mosquitto* mosq = (struct mosquitto*)data;
+  		int rc = mosquitto_connect(mosq, "114.33.252.156", 1883, 10);
+  		string msg("HEARTBEAT CHARLIE");
+  		mosquitto_publish(mosq, NULL, "test/t1", msg.length()+1, msg.c_str(), 1, false);
+		cout<<"msg sent !"<<endl;
+		sleep(5)
+	}
 }
 
 void on_connect(struct mosquitto *mosq, void *obj, int rc) {
