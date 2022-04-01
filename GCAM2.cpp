@@ -23,7 +23,7 @@ void* heartBeat(void* data){
   		string msg("HEARTBEAT CHARLIE");
   		mosquitto_publish(mosq, NULL, "test/t1", msg.length()+1, msg.c_str(), 1, false);
 		cout<<"msg sent !"<<endl;
-		sleep(5)
+		sleep(5);
 	}
 }
 
