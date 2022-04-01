@@ -1,8 +1,9 @@
 
-
 #include <iostream>
 #include <gst/gst.h>
 #include <mosquitto.h>
+#include <unistd.h>
+#include <pthread.h>
 
 using namespace std;
 
@@ -13,6 +14,12 @@ typedef struct _CustomData {
          /* Our one and only pipeline */
 	
 } CustomData;
+
+void heartBeat(struct mosquitto *mosq){
+  int rc = mosquitto_connect(mosq, "114.33.252.156", 1883, 10);
+  String msg("HEARTBEAT CHARLIE")
+  mosquitto_publish(mosq, NULL, "test/t1", msg.length()+1, msg.toStdString().c_str(), 1, false);
+}
 
 void on_connect(struct mosquitto *mosq, void *obj, int rc) {
 	if(rc) {
@@ -35,14 +42,14 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 	}
 	if(cap.compare(string("START")) == 0){
 		if(data->streaming_started == false){
-			data->pipeline = gst_parse_launch("gst-launch-1.0 -v v4l2src device=/dev/video0 num-buffers=-1 ! video/x-raw, width=160, height=120, framerate=12/1 ! videoconvert ! jpegenc ! rtpjpegpay ! udpsink host=172.23.196.213 port=5200", NULL);
+			data->pipeline = gst_parse_launch("gst-launch-1.0 -v v4l2src device=/dev/video0 num-buffers=-1 ! video/x-raw, width=160, height=120, framerate=12/1 ! videoconvert ! jpegenc ! rtpjpegpay ! udpsink host=10.8.0.4 port=5200", NULL);
 			gst_element_set_state (data->pipeline, GST_STATE_PLAYING);
 			data->streaming_started = true;
 			cout<<"START..."<<endl;
 		}else{
 			gst_element_set_state (data->pipeline, GST_STATE_NULL);
   			//gst_object_unref (data->pipeline);
-			data->pipeline = gst_parse_launch("gst-launch-1.0 -v v4l2src device=/dev/video0 num-buffers=-1 ! video/x-raw, width=640, height=480, framerate=12/1 ! videoconvert ! jpegenc ! rtpjpegpay ! udpsink host=172.23.196.213 port=5200", NULL);
+			data->pipeline = gst_parse_launch("gst-launch-1.0 -v v4l2src device=/dev/video0 num-buffers=-1 ! video/x-raw, width=640, height=480, framerate=12/1 ! videoconvert ! jpegenc ! rtpjpegpay ! udpsink host=10.8.0.4 port=5200", NULL);
 			gst_element_set_state (data->pipeline, GST_STATE_PLAYING);
 		}
 	}else if(cap.compare(string("GST")) == 0){
@@ -96,8 +103,12 @@ int main(int argc, char *argv[]) {
 	}
 
 	mosquitto_loop_start(mosq);
+	pthread_t heartBeatThread;
+	pthread_create(&heartBeatThread, NULL, heartBeat, mosq);
+	
 	cout<<"Press Enter to quit...\n";
 	getchar();
+	pthread_join(heartBeatThread,NULL);
 	mosquitto_loop_stop(mosq, true);
 
 	mosquitto_disconnect(mosq);
