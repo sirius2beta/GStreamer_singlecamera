@@ -1,6 +1,10 @@
 CXX = g++
 CXXFLAGS = `pkg-config --cflags --libs gstreamer-1.0`
 LIBS = -lwiringPi -lmosquitto
+LIBS2 = -lwiringPi -lmosquitto -lpthread
 
 GCAM: GCAM.cpp
 	$(CXX) $^ -o $@ $(CXXFLAGS) $(LIBS)
+
+GCAM2: GCAM2.cpp
+	$(CXX) $^ -o $@ $(CXXFLAGS) $(LIBS2)
