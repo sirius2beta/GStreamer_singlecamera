@@ -8,6 +8,8 @@
 
 using namespace std;
 
+int terminate_int = 0;
+
 typedef struct _CustomData {
   	GstElement *pipeline;
 	bool streaming_started;
@@ -17,7 +19,7 @@ typedef struct _CustomData {
 } CustomData;
 
 void* heartBeat(void* data){
-	while(1){
+	while(terminate_int == 0){
 		struct mosquitto* mosq = (struct mosquitto*)data;
   		int rc = mosquitto_connect(mosq, "114.33.252.156", 1883, 10);
   		string msg("HEARTBEAT CHARLIE");
@@ -114,6 +116,7 @@ int main(int argc, char *argv[]) {
 	
 	cout<<"Press Enter to quit...\n";
 	getchar();
+	terminate_int = 1;
 	pthread_join(heartBeatThread,NULL);
 	mosquitto_loop_stop(mosq, true);
 
