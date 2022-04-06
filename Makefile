@@ -9,5 +9,5 @@ GCAM: GCAM.cpp
 GCAM2: GCAM2.cpp
 	$(CXX) $^ -o $@ $(CXXFLAGS) $(LIBS2)
 	
-GCAM2: GCAM_V2.cpp
+GCAM_V2: GCAM_V2.cpp
 	$(CXX) $^ -o $@ $(CXXFLAGS) $(LIBS)
