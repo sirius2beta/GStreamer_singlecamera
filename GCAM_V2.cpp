@@ -74,7 +74,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		}else{
 			cout<<"No matching cmd:"<<cap<<endl;
 		}
-	}else if(topic.compare(string("5201")) == 0)){
+	}else if(topic.compare(string("5201")) == 0){
 		cout<<"topic : 5201";
 	 	if(cap.compare(string("START")) == 0){
 			if(data->streaming_started == false){
