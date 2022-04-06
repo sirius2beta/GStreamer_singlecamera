@@ -9,6 +9,7 @@ typedef struct _CustomData {
   	GstElement *pipeline;
 	GstElement *pipeline2;
 	bool streaming_started;
+	bool streaming_started2;
 	int currentCameraID;
          /* Our one and only pipeline */
 	
@@ -37,7 +38,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		cap = string(raw_msg,0, space_pos);
 	}
 	
-	if(topic.compare(string("5200")) == 0){
+	if(topic.compare(string("USV-CMD/5200")) == 0){
 		cout<<"topic : 5200";
 		if(cap.compare(string("START")) == 0){
 			if(data->streaming_started == false){
@@ -74,13 +75,13 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 		}else{
 			cout<<"No matching cmd:"<<cap<<endl;
 		}
-	}else if(topic.compare(string("5201")) == 0){
+	}else if(topic.compare(string("USV-CMD/5201")) == 0){
 		cout<<"topic : 5201";
 	 	if(cap.compare(string("START")) == 0){
-			if(data->streaming_started == false){
+			if(data->streaming_started2 == false){
 				data->pipeline2 = gst_parse_launch("gst-launch-1.0 -v v4l2src device=/dev/video0 num-buffers=-1 ! video/x-raw, width=160, height=120, framerate=12/1 ! videoconvert ! jpegenc ! rtpjpegpay ! udpsink host=10.8.0.4 port=5200", NULL);
 				gst_element_set_state (data->pipeline2, GST_STATE_PLAYING);
-				data->streaming_started = true;
+				data->streaming_started2 = true;
 				cout<<"START..."<<endl;
 			}else{
 				gst_element_set_state (data->pipeline2, GST_STATE_NULL);
@@ -90,10 +91,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			}
 		}else if(cap.compare(string("GST")) == 0){
 			string gst_command(raw_msg,space_pos+1,raw_msg.length()-space_pos-1);
-			if(data->streaming_started == false){
+			if(data->streaming_started2 == false){
 				data->pipeline2 = gst_parse_launch(gst_command.c_str(), NULL);
 				gst_element_set_state (data->pipeline2, GST_STATE_PLAYING);
-				data->streaming_started = true;
+				data->streaming_started2 = true;
 			}else{
 				gst_element_set_state (data->pipeline2, GST_STATE_NULL);
 				data->pipeline2 = gst_parse_launch(gst_command.c_str(), NULL);
@@ -102,10 +103,10 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 			cout<<"GST_COMMAND : "<<gst_command<<endl;
 	
 		}else if(cap.compare(string("QUIT")) == 0){
-			if(data->streaming_started == true){
+			if(data->streaming_started2 == true){
 				gst_element_set_state (data->pipeline2, GST_STATE_NULL);
   				gst_object_unref (data->pipeline2);
-				data->streaming_started = false;
+				data->streaming_started2 = false;
 				cout<<"quit..."<<endl;
 			}
 		}else{
@@ -124,6 +125,8 @@ int main(int argc, char *argv[]) {
 	CustomData data;
 	
 	data.streaming_started=false;
+	data.streaming_started2=false;
+
 
 	mosquitto_lib_init();
 	/* Initialize GStreamer */
@@ -154,6 +157,10 @@ int main(int argc, char *argv[]) {
 	if(data.streaming_started){
  		gst_element_set_state (data.pipeline, GST_STATE_NULL);
   		gst_object_unref (data.pipeline);
+	}
+	if(data.streaming_started2){
+ 		gst_element_set_state (data.pipeline2, GST_STATE_NULL);
+  		gst_object_unref (data.pipeline2);
 	}
 
 
