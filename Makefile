@@ -11,3 +11,6 @@ GCAM2: GCAM2.cpp
 	
 GCAM_V2: GCAM_V2.cpp
 	$(CXX) $^ -o $@ $(CXXFLAGS) $(LIBS)
+	
+GCAM_V3: GCAM_V3.cpp
+	$(CXX) $^ -o $@ $(CXXFLAGS) $(LIBS)
