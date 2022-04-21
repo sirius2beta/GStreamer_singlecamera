@@ -151,7 +151,7 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 
 int main(int argc, char *argv[]) {
 	cout<<"sleep for 5 secs"<<endl;
-	sleep(20); 
+	sleep(5); 
 	cout<<"start"<<endl;
   	gst_init (&argc, &argv);
 	int rc, id=12;
@@ -183,7 +183,9 @@ int main(int argc, char *argv[]) {
 
 	mosquitto_loop_start(mosq);
 	cout<<"Press Enter to quit...\n";
-	getchar();
+	//getchar();
+	while(1){
+	};
 	mosquitto_loop_stop(mosq, true);
 
 	mosquitto_disconnect(mosq);
