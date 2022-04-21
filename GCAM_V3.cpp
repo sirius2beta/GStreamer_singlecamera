@@ -150,9 +150,6 @@ void on_message(struct mosquitto *mosq, void *obj, const struct mosquitto_messag
 }
 
 int main(int argc, char *argv[]) {
-	cout<<"sleep for 5 secs"<<endl;
-	sleep(5); 
-	cout<<"start"<<endl;
   	gst_init (&argc, &argv);
 	int rc, id=12;
 	
