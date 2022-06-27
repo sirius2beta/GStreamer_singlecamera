@@ -14,29 +14,30 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-	for i in range(1,5):
+	print(msg.topic+" "+str(msg.payload))
+
+form = []
+size = []
+interval = []
+#Check camera device
+for i in range(1,5):
 		try:
 			cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
 			returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
 			line_list = returned_value.split("\n")
-			form = ''
-			size = ''
 			new_line_list = list()
 			for i in line_list:
 				if len(i.split()) == 0:
 					continue
 				elif i.split()[0][0] =='[':
-					form = i.split()[0][1]
+					form.append(i.split()[0][1])
 				elif i.split()[0] =='Size:':
-					size = i.split()[2]
+					size.append(i.split()[2])
 					print(i)
 				elif i.split()[0] == 'Interval:':
-					print('{} {} {}'.format(form, size, i.split()[3][1:]))
+					interval.append(i.split()[3][1:])
 		except:
 			continue
-	print(msg.topic+" "+str(msg.payload))
-
-
 GObject.threads_init()
 Gst.init(None)
 
