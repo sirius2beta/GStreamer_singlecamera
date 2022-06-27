@@ -29,7 +29,7 @@ for i in range(0,5):
 				if len(i.split()) == 0:
 					continue
 				elif i.split()[0][0] =='[':
-					form = i.split()[1][1:-1]
+					form = i.split()[1]
 				elif i.split()[0] =='Size:':
 					size = i.split()[2]
 				elif i.split()[0] == 'Interval:':
