@@ -24,19 +24,18 @@ for i in range(0,5):
 			cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
 		except:
 			continue
-			returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
-			line_list = returned_value.split("\n")
-			new_line_list = list()
-			for i in line_list:
-				if len(i.split()) == 0:
-					continue
-				elif i.split()[0][0] =='[':
-					#form = i.split()[0]
-					form = 'YUYU'
-				elif i.split()[0] =='Size:':
-					size = i.split()[2]
-				elif i.split()[0] == 'Interval:':
-					camera_format.append(form+' '+size+' '+i.split()[3][1:])
+		returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
+		line_list = returned_value.split("\n")
+		new_line_list = list()
+		for i in line_list:
+			if len(i.split()) == 0:
+				continue
+			elif i.split()[0][0] =='[':
+				form = i.split()[0][1:-1]
+			elif i.split()[0] =='Size:':
+				size = i.split()[2]
+			elif i.split()[0] == 'Interval:':
+				camera_format.append(form+' '+size+' '+i.split()[3][1:])
 		
 if len(camera_format) != 0:
 	for i in camera_format:
