@@ -16,9 +16,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
 	print(msg.topic+" "+str(msg.payload))
 
-form = []
-size = []
-interval = []
+camera_format = []
 #Check camera device
 for i in range(1,5):
 		try:
@@ -30,12 +28,11 @@ for i in range(1,5):
 				if len(i.split()) == 0:
 					continue
 				elif i.split()[0][0] =='[':
-					form.append(i.split()[0][1])
+					form = i.split()[0][1]
 				elif i.split()[0] =='Size:':
-					size.append(i.split()[2])
-					print(i)
+					size = i.split()[2]
 				elif i.split()[0] == 'Interval:':
-					interval.append(i.split()[3][1:])
+					camera_format.append("{} {} {}".format(form, size, num(i.split()[3][1:])))
 		except:
 			continue
 GObject.threads_init()
