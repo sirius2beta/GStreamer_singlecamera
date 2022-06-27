@@ -29,11 +29,12 @@ for i in range(0,5):
 				if len(i.split()) == 0:
 					continue
 				elif i.split()[0][0] =='[':
-					form = i.split()[0]
+					#form = i.split()[0]
+					form = 'YUYU'
 				elif i.split()[0] =='Size:':
 					size = i.split()[2]
 				elif i.split()[0] == 'Interval:':
-					camera_format.append(form+' '+size+' '+int(i.split()[3][1:]))
+					camera_format.append("yes")
 		except:
 			continue
 if len(camera_format) != 0:
