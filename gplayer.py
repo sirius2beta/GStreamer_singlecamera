@@ -43,7 +43,7 @@ def on_message(client, userdata, msg):
 	print(head)
 	if head == 'qformat':
 		video_format = get_video_format()
-		client.publish('COAST', '\n'.join(video_format))
+		client.publish('Ground', '\n'.join(video_format))
 		print('publish format')
 	
 
