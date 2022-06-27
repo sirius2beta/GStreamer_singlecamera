@@ -56,7 +56,7 @@ def on_message(client, userdata, msg):
 			print('format error')
 		else:
 			gstring = 'v4l2src device=/dev/'+video 
-			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate=1/{} ! '.format(gform,width,height,framerate)
+			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(gform,width,height,framerate)
 			if mid != 'nan':
 				gstring += (mid+' ! ')
 			gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
