@@ -50,11 +50,13 @@ def on_message(client, userdata, msg):
 	if head == 'cmd':
 		video_format = get_video_format()
 		video, form, width, height, framerate, mid, quility, ip, port = str(msg.payload).split()[1:]
+		if form == 'YUYV':
+			gform = 'YUY2'
 		if("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate) not in video_format):
 			print('format error')
 		else:
 			gstring = 'v4l2src device=/dev/'+video 
-			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate=1/{} ! '.format(form,width,height,framerate)
+			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate=1/{} ! '.format(gform,width,height,framerate)
 			if mid != 'nan':
 				gstring += (mid+' ! ')
 			gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
