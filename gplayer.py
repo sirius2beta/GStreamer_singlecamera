@@ -25,6 +25,7 @@ for i in range(0,5):
 			returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
 			line_list = returned_value.split("\n")
 			new_line_list = list()
+			print("good")
 			for i in line_list:
 				if len(i.split()) == 0:
 					continue
