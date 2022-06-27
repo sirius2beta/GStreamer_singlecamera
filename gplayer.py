@@ -6,7 +6,7 @@ gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GLib, GObject
 
 #get video format from existing camera devices
-def video_format():	
+def get_video_format():	
 	camera_format = []
 	#Check camera device
 	for i in range(0,5):
@@ -42,7 +42,7 @@ def on_message(client, userdata, msg):
 	head = str(msg.payload).split()[0]
 	print(head)
 	if head == 'qformat':
-		video_format = video_format()
+		video_format = get_video_format()
 		client.publish('COAST', '\n'.join(video_format))
 		print('publish format')
 	
