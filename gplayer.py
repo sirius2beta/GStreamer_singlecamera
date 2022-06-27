@@ -28,11 +28,14 @@ for i in range(0,5):
 			print("good")
 			for i in line_list:
 				if len(i.split()) == 0:
+					print("0")
 					continue
 				elif i.split()[0][0] =='[':
 					form = i.split()[0][1]
+					print("1")
 				elif i.split()[0] =='Size:':
 					size = i.split()[2]
+					print("2")
 				elif i.split()[0] == 'Interval:':
 					camera_format.append("{} {} {}".format(form, size, num(i.split()[3][1:])))
 					print("good")
