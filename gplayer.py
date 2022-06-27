@@ -42,7 +42,8 @@ def on_message(client, userdata, msg):
 	head = str(msg.payload).split()[0]
 	print(head)
 	if head == 'qformat':
-		client.publish('COAST', '\n'.join(video_format()))
+		video_format = video_format()
+		client.publish('COAST', '\n'.join(video_format))
 		print('publish format')
 	
 
