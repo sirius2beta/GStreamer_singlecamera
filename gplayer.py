@@ -49,7 +49,12 @@ def on_message(client, userdata, msg):
 		client.publish(GROUND1, USV1+' format '+'\n'.join(video_format))
 	if head == 'cmd':
 		video_format = get_video_format()
-		video, form, width, height, framerate, mid, quility = str(msg.payload).split()[1:]
+		video, form, width, height, framerate, mid, quility, ip, port = str(msg.payload).split()[1:]
+		gstring = 'gst-launch-1.0 -v v4l2src device=/dev/'+video 
+		gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={} ! '.format(form,width,height)
+		gstring +=mid
+		gstring +='  ! jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
+		print(gstring)
 
 
 GObject.threads_init()
