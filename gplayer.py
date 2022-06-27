@@ -37,8 +37,7 @@ for i in range(0,5):
 				size = i.split()[2]
 				width, height = size.split('x')
 			elif i.split()[0] == 'Interval:':
-				framerate = i.split()[3][1:]
-				camera_format.append('{} width={} height={} {} framerate={}'.format(form, size, framerate))
+				camera_format.append('{} width={} height={} {} framerate={}'.format(form, width, height , i.split()[3][1:].split('.')[0]))
 		
 if len(camera_format) != 0:
 	for i in camera_format:
