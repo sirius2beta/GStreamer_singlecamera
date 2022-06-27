@@ -6,7 +6,7 @@ gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GLib, GObject
 
 GROUND1 = 'ground1'
-VIDEO1 =  'video1'
+USV1 =  'usv1'
 
 #get video format from existing camera devices
 def get_video_format():	
@@ -37,7 +37,7 @@ def on_connect(client, userdata, flags, rc):
 	print("Connected with result code "+str(rc))
 	# Subscribing in on_connect() means that if we lose the connection and
 	# reconnect then subscriptions will be renewed.
-	client.subscribe(VIDEO1)
+	client.subscribe(USV1)
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -46,7 +46,7 @@ def on_message(client, userdata, msg):
 	print(head)
 	if head == 'qformat':
 		video_format = get_video_format()
-		client.publish(GROUND1, '\n'.join(video_format))
+		client.publish(GROUND1, USV1+'\n'.join(video_format))
 		print('publish format')
 	
 
