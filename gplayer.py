@@ -47,10 +47,7 @@ def on_message(client, userdata, msg):
 		print('publish format')
 	
 
-video_format = video_format()
-if len(video_format) != 0:
-	for i in video_format:
-		print(i)
+
 GObject.threads_init()
 Gst.init(None)
 
