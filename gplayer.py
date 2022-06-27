@@ -40,6 +40,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
 	print(msg.topic+" "+str(msg.payload))
 	head = str(msg.payload).split()[0]
+	print(head)
 	if head == 'qformat':
 		client.publish('COAST', '\n'.join(video_format()))
 		print('publish format')
