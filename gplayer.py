@@ -16,31 +16,31 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
 	print(msg.topic+" "+str(msg.payload))
 	
-
-camera_format = []
-#Check camera device
-for i in range(0,5):
-		try:
-			cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
-			returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
-		except:
-			continue
-		
-		line_list = returned_value.split("\n")
-		new_line_list = list()
-		for j in line_list:
-			if len(j.split()) == 0:
+def video_format():	
+	camera_format = []
+	#Check camera device
+	for i in range(0,5):
+			try:
+				cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
+				returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
+			except:
 				continue
-			elif j.split()[0][0] =='[':
-				form = j.split()[1][1:-1]
-			elif j.split()[0] =='Size:':
-				size = j.split()[2]
-				width, height = size.split('x')
-			elif j.split()[0] == 'Interval:':
-				camera_format.append('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
-	
-if len(camera_format) != 0:
-	for i in camera_format:
+			line_list = returned_value.split("\n")
+			new_line_list = list()
+			for j in line_list:
+				if len(j.split()) == 0:
+					continue
+				elif j.split()[0][0] =='[':
+					form = j.split()[1][1:-1]
+				elif j.split()[0] =='Size:':
+					size = j.split()[2]
+					width, height = size.split('x')
+				elif j.split()[0] == 'Interval:':
+					camera_format.append('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
+	return camera_format
+video_format = video_format()
+if len(video_format) != 0:
+	for i in video_format:
 		print(i)
 GObject.threads_init()
 Gst.init(None)
