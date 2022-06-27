@@ -5,32 +5,12 @@ import subprocess
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GLib, GObject
 
-
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
-
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
-    client.subscribe("COAST")
-
-# The callback for when a PUBLISH message is received from the server.
-def on_message(client, userdata, msg):
-	import paho.mqtt.client as mqtt
-import gi
-import os
-import subprocess
-gi.require_version("Gst", "1.0")
-from gi.repository import Gst, GLib, GObject
-
-
-# The callback for when the client receives a CONNACK response from the server.
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
-
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
-    client.subscribe("COAST")
+	print("Connected with result code "+str(rc))
+	# Subscribing in on_connect() means that if we lose the connection and
+	# reconnect then subscriptions will be renewed.
+	client.subscribe("COAST")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -54,7 +34,7 @@ def on_message(client, userdata, msg):
 					print('{} {} {}'.format(form, size, i.split()[3][1:]))
 		except:
 			continue
-    print(msg.topic+" "+str(msg.payload))
+	print(msg.topic+" "+str(msg.payload))
 
 
 GObject.threads_init()
