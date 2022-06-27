@@ -34,6 +34,7 @@ for i in range(0,5):
 					size = i.split()[2]
 				elif i.split()[0] == 'Interval:':
 					camera_format.append("{} {} {}".format(form, size, num(i.split()[3][1:])))
+					print("good")
 		except:
 			continue
 if len(camera_format) != 0:
