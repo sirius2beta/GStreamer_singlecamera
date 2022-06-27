@@ -22,6 +22,8 @@ camera_format = []
 for i in range(0,5):
 		try:
 			cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
+		except:
+			continue
 			returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
 			line_list = returned_value.split("\n")
 			new_line_list = list()
@@ -34,9 +36,8 @@ for i in range(0,5):
 				elif i.split()[0] =='Size:':
 					size = i.split()[2]
 				elif i.split()[0] == 'Interval:':
-					camera_format.append(form+' '+size+' ')
-		except:
-			continue
+					camera_format.append(form+' '+size+' '+i.split()[3][1:])
+		
 if len(camera_format) != 0:
 	for i in camera_format:
 		print(i)
