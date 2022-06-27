@@ -36,7 +36,7 @@ for i in range(1,5):
 					camera_format.append("{} {} {}".format(form, size, num(i.split()[3][1:])))
 		except:
 			continue
-if size(camera_format) != 0:
+if len(camera_format) != 0:
 	for i in camera_format:
 		print(i)
 GObject.threads_init()
