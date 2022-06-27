@@ -54,9 +54,10 @@ def on_message(client, userdata, msg):
 			print('format error')
 		else:
 			gstring = 'gst-launch-1.0 -v v4l2src device=/dev/'+video 
-			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={} ! '.format(form,width,height)
-			gstring +=mid
-			gstring +='  ! jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
+			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate=1/{} ! '.format(form,width,height)
+			if mid != 'nan':
+				gstring += (mid+' ! ')
+			gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 			print(gstring)
 
 
