@@ -22,9 +22,10 @@ camera_format = []
 for i in range(0,5):
 		try:
 			cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
+			returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
 		except:
 			continue
-		returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
+		
 		line_list = returned_value.split("\n")
 		new_line_list = list()
 		for i in line_list:
