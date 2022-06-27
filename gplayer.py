@@ -35,6 +35,7 @@ for i in range(0,5):
 				form = i.split()[1][1:-1]
 			elif i.split()[0] =='Size:':
 				size = i.split()[2]
+				width, height = size.split('x')
 			elif i.split()[0] == 'Interval:':
 				camera_format.append(form+' '+size+' '+i.split()[3][1:])
 		
