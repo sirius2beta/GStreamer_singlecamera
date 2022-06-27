@@ -19,7 +19,7 @@ def on_message(client, userdata, msg):
 
 camera_format = []
 #Check camera device
-for i in range(1,5):
+for i in range(0,5):
 		try:
 			cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
 			returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
