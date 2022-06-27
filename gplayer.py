@@ -5,17 +5,7 @@ import subprocess
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GLib, GObject
 
-# The callback for when the client receives a CONNACK response from the server.
-def on_connect(client, userdata, flags, rc):
-	print("Connected with result code "+str(rc))
-	# Subscribing in on_connect() means that if we lose the connection and
-	# reconnect then subscriptions will be renewed.
-	client.subscribe("COAST")
-
-# The callback for when a PUBLISH message is received from the server.
-def on_message(client, userdata, msg):
-	print(msg.topic+" "+str(msg.payload))
-	
+#get video format from existing camera devices
 def video_format():	
 	camera_format = []
 	#Check camera device
@@ -38,6 +28,23 @@ def video_format():
 				elif j.split()[0] == 'Interval:':
 					camera_format.append('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
 	return camera_format
+
+# The callback for when the client receives a CONNACK response from the server.
+def on_connect(client, userdata, flags, rc):
+	print("Connected with result code "+str(rc))
+	# Subscribing in on_connect() means that if we lose the connection and
+	# reconnect then subscriptions will be renewed.
+	client.subscribe("COAST")
+
+# The callback for when a PUBLISH message is received from the server.
+def on_message(client, userdata, msg):
+	print(msg.topic+" "+str(msg.payload))
+	head = str(msg.payload).split()[0]
+	if head == 'qformat':
+		client.publish('COAST', '\n'.join(video_format()))
+		print('publish format')
+	
+
 video_format = video_format()
 if len(video_format) != 0:
 	for i in video_format:
