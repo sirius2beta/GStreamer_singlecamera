@@ -47,7 +47,7 @@ def on_message(client, userdata, msg):
 	if head == 'qformat':
 		video_format = get_video_format()
 		client.publish(GROUND1, USV1+' format '+'\n'.join(video_format))
-		print('publish format')
+		print('publish format ', '\n'.join(video_format))
 	
 
 
