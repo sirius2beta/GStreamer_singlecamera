@@ -34,7 +34,7 @@ for i in range(0,5):
 				elif i.split()[0] =='Size:':
 					size = i.split()[2]
 				elif i.split()[0] == 'Interval:':
-					camera_format.append(form+' '+size+' '+int(i.split()[3][1:]))
+					camera_format.append(form+' '+size+' ')
 		except:
 			continue
 if len(camera_format) != 0:
