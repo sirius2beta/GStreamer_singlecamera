@@ -59,10 +59,20 @@ def on_message(client, userdata, msg):
 				gstring += (mid+' ! ')
 			gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 			print(gstring)
+			if pipline1_playing == True:
+				pipline.set_state(Gst.State.NULL)
+				pipline = Gst.parse_launch(gstring)
+				pipline.set_state(Gst.State.PLAYING)
+			else:
+				pipline = Gst.parse_launch(gstring)
+				pipline.set_state(Gst.State.PLAYING)
+				
 
 
 GObject.threads_init()
 Gst.init(None)
+
+pipline1_playing = False
 
 client = mqtt.Client()
 client.on_connect = on_connect
