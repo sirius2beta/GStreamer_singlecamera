@@ -28,15 +28,15 @@ for i in range(0,5):
 		
 		line_list = returned_value.split("\n")
 		new_line_list = list()
-		for i in line_list:
-			if len(i.split()) == 0:
+		for j in line_list:
+			if len(j.split()) == 0:
 				continue
-			elif i.split()[0][0] =='[':
-				form = i.split()[1][1:-1]
-			elif i.split()[0] =='Size:':
-				size = i.split()[2]
+			elif j.split()[0][0] =='[':
+				form = j.split()[1][1:-1]
+			elif j.split()[0] =='Size:':
+				size = j.split()[2]
 				width, height = size.split('x')
-			elif i.split()[0] == 'Interval:':
+			elif j.split()[0] == 'Interval:':
 				camera_format.append('video{} {} width={} height={} framerate={}'.format(i,form, width, height , i.split()[3][1:].split('.')[0]))
 	
 if len(camera_format) != 0:
