@@ -15,6 +15,7 @@ def on_connect(client, userdata, flags, rc):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
 	print(msg.topic+" "+str(msg.payload))
+	
 
 camera_format = []
 #Check camera device
@@ -35,6 +36,9 @@ for i in range(1,5):
 					camera_format.append("{} {} {}".format(form, size, num(i.split()[3][1:])))
 		except:
 			continue
+if size(camera_format) != 0:
+	for i in camera_format:
+		print(i)
 GObject.threads_init()
 Gst.init(None)
 
