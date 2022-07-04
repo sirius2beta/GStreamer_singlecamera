@@ -23,7 +23,7 @@ def createPipelines():
 		for j in line_list:
 			if len(j.split()) != 0:
 				pipeline = Gst.Pipeline()
-				pipelines.append(_pipeline)
+				_pipelines.append(pipeline)
 	return _pipelines
 	
 
