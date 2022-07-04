@@ -49,7 +49,8 @@ def on_message(client, userdata, msg):
 		client.publish(GROUND1, USV1+' format '+'\n'.join(video_format))
 	if head == 'cmd':
 		video_format = get_video_format()
-		video, form, width, height, framerate, mid, quility, ip, port = str(msg.payload).split()[1:]
+		video, form, videosize, mid, quility, ip, port = str(msg.payload).split()[1:]
+		width, height, framerate = videosize.split('-')
 		if form == 'YUYV':
 			gform = 'YUY2'
 		if("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate) not in video_format):
