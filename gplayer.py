@@ -7,6 +7,25 @@ from gi.repository import Gst, GLib, GObject
 
 GROUND1 = 'ground1'
 USV1 =  'usv1'
+pipelines = []
+pipelines_state = []
+
+def createPipelines():
+	_pipelines = []
+	for i in range(0,5):
+		try:
+			cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
+			returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
+		except:
+			continue
+		line_list = returned_value.split("\n")
+		new_line_list = list()
+		for j in line_list:
+			if len(j.split()) != 0:
+				pipeline = Gst.Pipeline()
+				pipelines.append(_pipeline)
+	return _pipelines
+	
 
 #get video format from existing camera devices
 def get_video_format():	
@@ -62,21 +81,23 @@ def on_message(client, userdata, msg):
 				gstring += (mid+' ! ')
 			gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 			print(gstring)
-			if pipline1_playing == True:
-				pipeline.set_state(Gst.State.NULL)
-				pipeline = Gst.parse_launch(gstring)
-				pipeline.set_state(Gst.State.PLAYING)
+			videoindex = int(video[5:])
+			if piplines_state[videoindex] == True:
+				pipelines[videoindex].set_state(Gst.State.NULL)
+				pipelines[videoindex] = Gst.parse_launch(gstring)
+				pipelines[videoindex].set_state(Gst.State.PLAYING)
 			else:
-				pipeline = Gst.parse_launch(gstring)
-				pipeline.set_state(Gst.State.PLAYING)
+				pipelines[videoindex] = Gst.parse_launch(gstring)
+				pipelines[videoindex].set_state(Gst.State.PLAYING)
 				
 
 
 GObject.threads_init()
 Gst.init(None)
 
-pipline1_playing = False
-pipeline = Gst.Pipeline()
+pipelines = createPipelines()
+for i in pipelines:
+	pipelines_state.append(false)
 
 client = mqtt.Client()
 client.on_connect = on_connect
