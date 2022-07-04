@@ -86,10 +86,11 @@ def on_message(client, userdata, msg):
 				pipelines[videoindex].set_state(Gst.State.NULL)
 				pipelines[videoindex] = Gst.parse_launch(gstring)
 				pipelines[videoindex].set_state(Gst.State.PLAYING)
+				
 			else:
 				pipelines[videoindex] = Gst.parse_launch(gstring)
 				pipelines[videoindex].set_state(Gst.State.PLAYING)
-				
+			piplines_state[videoindex] = True	
 
 
 GObject.threads_init()
@@ -97,7 +98,7 @@ Gst.init(None)
 
 pipelines = createPipelines()
 for i in pipelines:
-	pipelines_state.append(false)
+	pipelines_state.append(False)
 
 client = mqtt.Client()
 client.on_connect = on_connect
