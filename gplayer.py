@@ -9,6 +9,7 @@ GROUND1 = 'ground1'
 USV1 =  'usv1'
 pipelines = []
 pipelines_state = []
+cameraformat = []
 
 def createPipelines():
 	_pipelines = []
@@ -64,15 +65,13 @@ def on_message(client, userdata, msg):
 	head = str(msg.payload).split()[0]
 	print(head)
 	if head == 'qformat':
-		video_format = get_video_format()
-		client.publish(GROUND1, USV1+' format '+'\n'.join(video_format))
+		client.publish(GROUND1, USV1+' format '+'\n'.join(cameraformat))
 	if head == 'cmd':
-		video_format = get_video_format()
 		video, form, videosize, mid, quility, ip, port = str(msg.payload).split()[1:]
 		width, height, framerate = videosize.split('-')
 		if form == 'YUYV':
 			gform = 'YUY2'
-		if("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate) not in video_format):
+		if("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate) not in cameraformat):
 			print('format error')
 		else:
 			gstring = 'v4l2src device=/dev/'+video 
@@ -99,6 +98,7 @@ Gst.init(None)
 pipelines = createPipelines()
 for i in pipelines:
 	pipelines_state.append(False)
+cameraformat = get_video_format()
 
 client = mqtt.Client()
 client.on_connect = on_connect
