@@ -82,7 +82,7 @@ def on_message(client, userdata, msg):
 			gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 			print(gstring)
 			videoindex = int(video[5:])
-			if piplines_state[videoindex] == True:
+			if pipelines_state[videoindex] == True:
 				pipelines[videoindex].set_state(Gst.State.NULL)
 				pipelines[videoindex] = Gst.parse_launch(gstring)
 				pipelines[videoindex].set_state(Gst.State.PLAYING)
@@ -90,7 +90,7 @@ def on_message(client, userdata, msg):
 			else:
 				pipelines[videoindex] = Gst.parse_launch(gstring)
 				pipelines[videoindex].set_state(Gst.State.PLAYING)
-			piplines_state[videoindex] = True	
+			pipelines_state[videoindex] = True	
 
 
 GObject.threads_init()
