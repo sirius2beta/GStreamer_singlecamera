@@ -106,7 +106,8 @@ client.on_connect = on_connect
 client.on_message = on_message
 while True:
 	try:
-		client.connect("114.33.252.156", 1883, 60)
+		rc = client.connect("114.33.252.156", 1883, 60)
+		print(rc)
 		client.loop_forever()
 	except ZeroDivisionError:
 		print("connection failed, try again")
@@ -119,5 +120,5 @@ while True:
 # handles reconnecting.
 # Other loop*() functions are available that give a threaded interface and a
 # manual interface.
-client.loop_forever()
+#client.loop_forever()
 
