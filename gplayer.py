@@ -6,8 +6,9 @@ import time
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GLib, GObject
 
-GROUND1 = 'ground1'
-USV1 =  'usv1'
+BOAT_NAME = 'usv1'
+
+GROUND_NAME = 'ground1'
 pipelines = []
 pipelines_state = []
 cameraformat = []
@@ -53,12 +54,12 @@ def get_video_format():
 					camera_format.append('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
 	return camera_format
 
-# The callback for when the client receives a CONNACK response from the server.
+# The callback for when the client receives a CONNECT response from the server.
 def on_connect(client, userdata, flags, rc):
 	print("Connected with result code "+str(rc))
 	# Subscribing in on_connect() means that if we lose the connection and
 	# reconnect then subscriptions will be renewed.
-	client.subscribe(USV1)
+	client.subscribe(BOAT_NAME)
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -66,7 +67,7 @@ def on_message(client, userdata, msg):
 	head = str(msg.payload).split()[0]
 	print(head)
 	if head == 'qformat':
-		client.publish(GROUND1, USV1+' format '+'\n'.join(cameraformat))
+		client.publish(GROUND_NAME, BOAT_NAME+' format '+'\n'.join(cameraformat))
 	if head == 'cmd':
 		video, form, videosize, mid, quility, ip, port = str(msg.payload).split()[1:]
 		width, height, framerate = videosize.split('-')
