@@ -91,7 +91,12 @@ def on_message(client, userdata, msg):
 			else:
 				pipelines[videoindex] = Gst.parse_launch(gstring)
 				pipelines[videoindex].set_state(Gst.State.PLAYING)
-			pipelines_state[videoindex] = True	
+			pipelines_state[videoindex] = True
+	if head == 'quit'
+		video = int(str(msg.payload).split()[1][5:])
+		if pipelines_state[videoindex] == True:
+				pipelines[videoindex].set_state(Gst.State.NULL)
+				pipelines_state[videoindex] = False
 
 
 GObject.threads_init()
