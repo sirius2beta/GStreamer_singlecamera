@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import gi
 import os
 import subprocess
+import time
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GLib, GObject
 
@@ -103,8 +104,13 @@ cameraformat = get_video_format()
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
-
-client.connect("114.33.252.156", 1883, 60)
+while True:
+	try:
+		client.connect("114.33.252.156", 1883, 60)
+	else:
+		break
+	print("connection failed, try again")
+	time.sleep(1)
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
