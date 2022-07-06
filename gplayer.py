@@ -16,6 +16,7 @@ cameraformat = []
 
 def createPipelines():
 	_pipelines = []
+	_pipelinesexist = []
 	for i in range(0,5):
 		try:
 			cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
@@ -28,13 +29,14 @@ def createPipelines():
 			if len(j.split()) != 0:
 				pipeline = Gst.Pipeline()
 				_pipelines.append(pipeline)
-	return _pipelines
+				_pipelinesexist.append(i)
+	return _pipelinesexist, _pipelines
 	
 
 #get video format from existing camera devices
 def get_video_format():	
 	camera_format = []
-	_pipelinesexist = []
+	
 	#Check camera device
 	for i in range(0,5):
 			try:
@@ -54,7 +56,7 @@ def get_video_format():
 					width, height = size.split('x')
 				elif j.split()[0] == 'Interval:':
 					camera_format.append('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
-	return _pipelinesexist, camera_format
+	return camera_format
 
 # The callback for when the client receives a CONNECT response from the server.
 def on_connect(client, userdata, flags, rc):
