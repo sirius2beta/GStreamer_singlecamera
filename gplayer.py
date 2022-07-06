@@ -107,6 +107,7 @@ client.on_message = on_message
 while True:
 	try:
 		client.connect("114.33.252.156", 1883, 60)
+		client.loop_forever()
 	except ZeroDivisionError:
 		print("connection failed, try again")
 		time.sleep(1)
