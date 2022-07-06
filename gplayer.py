@@ -9,6 +9,7 @@ from gi.repository import Gst, GLib, GObject
 BOAT_NAME = 'usv1'
 
 GROUND_NAME = 'ground1'
+pipelinesexist = []
 pipelines = []
 pipelines_state = []
 cameraformat = []
@@ -33,6 +34,7 @@ def createPipelines():
 #get video format from existing camera devices
 def get_video_format():	
 	camera_format = []
+	_pipelinesexist = []
 	#Check camera device
 	for i in range(0,5):
 			try:
@@ -52,7 +54,7 @@ def get_video_format():
 					width, height = size.split('x')
 				elif j.split()[0] == 'Interval:':
 					camera_format.append('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
-	return camera_format
+	return _pipelinesexist, camera_format
 
 # The callback for when the client receives a CONNECT response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -82,7 +84,8 @@ def on_message(client, userdata, msg):
 				gstring += (mid+' ! ')
 			gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 			print(gstring)
-			videoindex = int(video[5:])
+			videoindex = pipelinesexist.index(int(video[5:]))
+			
 			if pipelines_state[videoindex] == True:
 				pipelines[videoindex].set_state(Gst.State.NULL)
 				pipelines[videoindex] = Gst.parse_launch(gstring)
@@ -94,6 +97,8 @@ def on_message(client, userdata, msg):
 			pipelines_state[videoindex] = True
 	if head == 'quit':
 		video = int(str(msg.payload).split()[1][5:])
+		if video in pipelinesexist:
+			videoindex = pipelinesexist.index(video)
 		if pipelines_state[videoindex] == True:
 				pipelines[videoindex].set_state(Gst.State.NULL)
 				pipelines_state[videoindex] = False
@@ -102,7 +107,7 @@ def on_message(client, userdata, msg):
 GObject.threads_init()
 Gst.init(None)
 
-pipelines = createPipelines()
+pipelinesexist, pipelines = createPipelines()
 for i in pipelines:
 	pipelines_state.append(False)
 cameraformat = get_video_format()
