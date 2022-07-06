@@ -103,6 +103,7 @@ def on_message(client, userdata, msg):
 			videoindex = pipelinesexist.index(video)
 			pipelines[videoindex].set_state(Gst.State.NULL)
 			pipelines_state[videoindex] = False
+			print("quit : video"+video)
 
 
 GObject.threads_init()
