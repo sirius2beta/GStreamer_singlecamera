@@ -107,10 +107,12 @@ client.on_message = on_message
 while True:
 	try:
 		client.connect("114.33.252.156", 1883, 60)
+	except ZeroDivisionError:
+		print("connection failed, try again")
+		time.sleep(1)
 	else:
 		break
-	print("connection failed, try again")
-	time.sleep(1)
+	
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
