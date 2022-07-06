@@ -101,9 +101,8 @@ def on_message(client, userdata, msg):
 		video = int(str(msg.payload).split()[1][5:])
 		if video in pipelinesexist:
 			videoindex = pipelinesexist.index(video)
-		if pipelines_state[videoindex] == True:
-				pipelines[videoindex].set_state(Gst.State.NULL)
-				pipelines_state[videoindex] = False
+			pipelines[videoindex].set_state(Gst.State.NULL)
+			pipelines_state[videoindex] = False
 
 
 GObject.threads_init()
