@@ -7,8 +7,8 @@ gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GLib, GObject
 
 BOAT_NAME = 'usv1'
-
 GROUND_NAME = 'ground1'
+
 pipelinesexist = []
 pipelines = []
 pipelines_state = []
