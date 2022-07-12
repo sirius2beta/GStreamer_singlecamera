@@ -108,7 +108,7 @@ def on_message(client, userdata, msg):
 
 GObject.threads_init()
 Gst.init(None)
-time.sleep(15)
+time.sleep(30)
 pipelinesexist, pipelines = createPipelines()
 for i in pipelines:
 	pipelines_state.append(False)
