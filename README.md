@@ -16,3 +16,11 @@ Add the following line before end
 BOAT_NAME = '船名'
 GROUND_NAME = '地面站名'
 ```
+3. 將程式加入自動執行程式
+```
+sudo nano rc.local
+```
+在exit 0之前加入:
+```
+python /home/pi/GStreamer_singlecamera/gplayer_hold.py 
+```
