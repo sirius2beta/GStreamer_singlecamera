@@ -17,20 +17,14 @@ cameraformat = []
 def createPipelines():
 	_pipelines = []
 	_pipelinesexist = []
-	for i in range(0,5):
-		try:
-			cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
-			returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
-		except:
-			continue
-		line_list = returned_value.split("\n")
-		new_line_list = list()
-		for j in line_list:
-			if len(j.split()) != 0:
-				pipeline = Gst.Pipeline()
-				_pipelines.append(pipeline)
-				_pipelinesexist.append(i)
-	return _pipelinesexist, _pipelines
+	camera_format = get_video_format()
+	for i in camera_format:
+		j = num(i.split()[5]);
+		pipeline = Gst.Pipeline()
+		_pipelines.append(pipeline)
+		_pipelinesexist.append(j)
+		print('video :'+j)
+	return _pipelinesexist, _pipelines, camera_format
 	
 
 #get video format from existing camera devices
@@ -109,10 +103,9 @@ def on_message(client, userdata, msg):
 GObject.threads_init()
 Gst.init(None)
 
-pipelinesexist, pipelines = createPipelines()
+pipelinesexist, pipelines, cameraformat = createPipelines()
 for i in pipelines:
 	pipelines_state.append(False)
-cameraformat = get_video_format()
 
 client = mqtt.Client()
 client.on_connect = on_connect
