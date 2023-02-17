@@ -17,7 +17,7 @@ pipelines_state = []
 cameraformat = []
 
 def aliveSignal():
-	client.publish(GROUND_NAME, BOAT+' alive')
+	client.publish(GROUND_NAME, BOAT_NAME+' alive')
 	time.sleep(5)
 
 def createPipelines():
