@@ -23,7 +23,7 @@ def createPipelines():
 		pipeline = Gst.Pipeline()
 		_pipelines.append(pipeline)
 		_pipelinesexist.append(j)
-		print('video :'+j)
+		print('video :'+str(j))
 	return _pipelinesexist, _pipelines, camera_format
 	
 
