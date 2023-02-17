@@ -120,8 +120,13 @@ for i in pipelines:
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
-
-client.connect("test.mosquitto.org", 1883, 60)
+while True:
+	try:
+		client.connect("test.mosquitto.org", 1883, 60)
+	except:
+		time.sleep(10)
+		continue
+	break
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
