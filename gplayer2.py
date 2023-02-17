@@ -3,6 +3,8 @@ import gi
 import os
 import subprocess
 import time
+import threading
+
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GLib, GObject
 
@@ -13,6 +15,10 @@ pipelinesexist = []
 pipelines = []
 pipelines_state = []
 cameraformat = []
+
+def aliveSignal():
+	client.publish(GROUND_NAME, BOAT+' alive')
+	time.sleep(5)
 
 def createPipelines():
 	_pipelines = []
@@ -59,6 +65,7 @@ def on_connect(client, userdata, flags, rc):
 	# Subscribing in on_connect() means that if we lose the connection and
 	# reconnect then subscriptions will be renewed.
 	client.subscribe(BOAT_NAME)
+	aliveThread = threading.Thread(target = aliveSignal)
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
