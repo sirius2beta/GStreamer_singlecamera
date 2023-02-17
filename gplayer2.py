@@ -19,7 +19,7 @@ def createPipelines():
 	_pipelinesexist = []
 	camera_format = get_video_format()
 	for i in camera_format:
-		j = num(i.split()[5]);
+		j = int(i.split()[5]);
 		pipeline = Gst.Pipeline()
 		_pipelines.append(pipeline)
 		_pipelinesexist.append(j)
