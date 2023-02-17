@@ -20,9 +20,10 @@ def createPipelines():
 	camera_format = get_video_format()
 	for i in camera_format:
 		j = int(i.split()[0][5]);
-		pipeline = Gst.Pipeline()
-		_pipelines.append(pipeline)
-		_pipelinesexist.append(j)
+		if(j not in _pipelinesexist):
+			pipeline = Gst.Pipeline()
+			_pipelines.append(pipeline)
+			_pipelinesexist.append(j)
 	print(_pipelinesexist)
 	return _pipelinesexist, _pipelines, camera_format
 	
