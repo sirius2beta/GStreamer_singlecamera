@@ -66,6 +66,7 @@ def on_connect(client, userdata, flags, rc):
 	# reconnect then subscriptions will be renewed.
 	client.subscribe(BOAT_NAME)
 	aliveThread = threading.Thread(target = aliveSignal)
+	aliveThread.start()
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
