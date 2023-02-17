@@ -66,7 +66,7 @@ def on_message(client, userdata, msg):
 	head = str(msg.payload).split()[0]
 	print(head)
 	if head == 'qformat':
-		client.publish(GROUND_NAME, BOAT_NAME+' format '+'\n'.join(cameraformat))
+		client.publish(GROUND_NAME, BOAT_NAME+' format '+'\n'+'\n'.join(cameraformat))
 	if head == 'cmd':
 		video, form, videosize, mid, quility, ip, port = str(msg.payload).split()[1:]
 		width, height, framerate = videosize.split('-')
