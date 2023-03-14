@@ -1,14 +1,56 @@
 import socket
+import threading
+import time
 
-HOST = ''
-PORT = 50007
+BOAT_NAME = 'usv1'
+GROUND_NAME = 'ground1'
+
+SERVER_IP = ''
+CLIENT_IP = '127.0.0.1' #船的IP
+OUT_PORT = 50008  
+IN_PORT = 50007  
+
+exit_loop = False
+
+
+def aliveSignal(cli, to_addr):
+	print('client started...')
+	t = threading.current_thread()
+	while getattr(t, "do_run", True):
+		beat = 'alive ' + BOAT_NAME
+		cli.sendto(beat.encode(),to_addr)
+		time.sleep(1)
+		
+def listenLoop(ser):
+	print('server started...')
+	t = threading.current_thread()
+	while getattr(t, "do_run", True):
+		try:
+			indata, addr = server.recvfrom(1024)
+			indata = indata.decode()
+			print(f'message from: {str(addr)}, data: {indata}')
+			# handle indata
+
+		except:
+			continue
+
 
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server.bind((HOST, PORT))
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server.bind((SERVER_IP, IN_PORT))
+server.setblocking(0)
 
-print(f'server started at {$PORT}')
-print(f'waiting for connection')
+print(f'server started at {IN_PORT}')
+print(f'發訊至 {CLIENT_IP}, Port: {IN_PORT}')
 
-while True:
-	indata, addr = server.recvfrom(1024)
-	print('message from: {str(addr), data: {indata.decode()}}
+thread_cli = threading.Thread(target=aliveSignal, args=(client, (CLIENT_IP, OUT_PORT)))
+thread_ser = threading.Thread(target=listenLoop, args=(server,))
+thread_cli.start()
+thread_ser.start()
+
+
+input("Press the Enter key to exit: ")
+thread_ser.do_run = False
+thread_cli.do_run = False
+thread_cli.join()
+thread_ser.join()
