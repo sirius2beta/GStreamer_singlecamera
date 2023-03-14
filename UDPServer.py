@@ -6,7 +6,7 @@ BOAT_NAME = 'usv1'
 GROUND_NAME = 'ground1'
 
 SERVER_IP = ''
-CLIENT_IP = '127.0.0.1' #船的IP
+CLIENT_IP = '100.117.209.85' #電腦的IP
 OUT_PORT = 50008  
 IN_PORT = 50007  
 
