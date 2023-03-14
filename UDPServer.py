@@ -28,7 +28,7 @@ def listenLoop(ser):
 		try:
 			indata, addr = server.recvfrom(1024)
 			indata = indata.decode()
-			print(f'message from: {str(addr)}, data:')
+			print('message')
 			# handle indata
 
 		except:
