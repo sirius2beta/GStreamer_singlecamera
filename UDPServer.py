@@ -41,7 +41,7 @@ server.bind((SERVER_IP, IN_PORT))
 server.setblocking(0)
 
 print(f'server started at {IN_PORT}')
-print(f'發訊至 {CLIENT_IP}, Port: {IN_PORT}')
+print(f'send to {CLIENT_IP}, Port: {IN_PORT}')
 
 thread_cli = threading.Thread(target=aliveSignal, args=(client, (CLIENT_IP, OUT_PORT)))
 thread_ser = threading.Thread(target=listenLoop, args=(server,))
