@@ -6,7 +6,7 @@ BOAT_NAME = 'usv1'
 GROUND_NAME = 'ground1'
 
 SERVER_IP = ''
-CLIENT_IP = '127.0.0.1' #Boat IP
+CLIENT_IP = '255.255.255.255' #Boat IP
 OUT_PORT = 50008  
 IN_PORT = 50007  
 
