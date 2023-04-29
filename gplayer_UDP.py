@@ -28,7 +28,7 @@ def aliveSignal():
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
 		beat = 'alive ' + BOAT_NAME
-		client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
+		client.sendto(beat.encode(),(thread_cli.Client_ip,OUT_PORT))
 		time.sleep(1)
 		print(f'client ip: {thread_cli.Client_ip}')
 
