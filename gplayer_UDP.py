@@ -177,7 +177,7 @@ lock = threading.Lock()
 thread_cli = threading.Thread(target=aliveSignal)
 thread_ser = threading.Thread(target=listenLoop, args=(server,))
 
-threa_cli.Client_ip = "192.168.0.1"
+thread_cli.Client_ip = "192.168.0.1"
 
 thread_cli.start()
 thread_ser.start()
