@@ -14,7 +14,7 @@ GROUND_NAME = 'ground1'
 
 PC_IP='192.168.0.0'
 SERVER_IP = ''
-CLIENT_IP = '100.117.209.85' #PC IP
+CLIENT_IP = '100.117.209.81' #PC IP
 OUT_PORT = 50008  
 IN_PORT = 50007 
 
@@ -30,6 +30,7 @@ def aliveSignal():
 		beat = 'alive ' + BOAT_NAME
 		client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
 		time.sleep(1)
+		print(f'client ip: {CLIENT_IP}')
 
 def createPipelines():
 	_pipelines = []
@@ -81,7 +82,7 @@ def listenLoop(ser):
 			header = indata.split()[0]
 			if header == 'HB':
 				CLIENT_IP = indata.split()[1]
-				print(f'client ip: {CLIENT_IP}')
+				
 				
 					
 			# handle indata
