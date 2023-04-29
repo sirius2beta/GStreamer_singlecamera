@@ -77,10 +77,11 @@ def listenLoop(ser):
 		try:
 			indata, addr = server.recvfrom(1024)
 			indata = indata.decode()
-			print(f'message from: {str(addr)}, data: {indata}')
+			#print(f'message from: {str(addr)}, data: {indata}')
 			header = indata.split()[0]
 			if header == 'HB':
 				CLIENT_IP = indata.split()[1]
+				print(f'client ip: {CLIENT_IP}')
 				if thread_cli.do_run:
 					thread_cli.do_run = False
 					thread_cli.join()
