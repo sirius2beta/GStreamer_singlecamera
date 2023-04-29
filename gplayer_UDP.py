@@ -12,8 +12,9 @@ from gi.repository import Gst, GLib, GObject
 BOAT_NAME = 'usv1'
 GROUND_NAME = 'ground1'
 
+PC_IP='192.168.0.0'
 SERVER_IP = ''
-CLIENT_IP = '100.117.209.85' #PC IP
+CLIENT_IP = '100.117.209.84' #PC IP
 OUT_PORT = 50008  
 IN_PORT = 50007 
 
@@ -77,6 +78,15 @@ def listenLoop(ser):
 			indata, addr = server.recvfrom(1024)
 			indata = indata.decode()
 			print(f'message from: {str(addr)}, data: {indata}')
+			header = indata.split()[0]
+			if header == 'HB':
+				CLIENT_IP = indata.split()[1]
+				if thread_cli.do_run:
+					thread_cli.do_run = False
+					thread_cli.join()
+					thread_cli = threading.Thread(target=aliveSignal, args=(client, (CLIENT_IP, OUT_PORT)))
+					thread_cli.start()
+					
 			# handle indata
 		except:
 			continue
@@ -163,6 +173,8 @@ server.setblocking(0)
 
 print(f'server started at {IN_PORT}')
 print(f'send message to {CLIENT_IP}, Port: {IN_PORT}')
+
+lock = threading.Lock()
 
 thread_cli = threading.Thread(target=aliveSignal, args=(client, (CLIENT_IP, OUT_PORT)))
 thread_ser = threading.Thread(target=listenLoop, args=(server,))
