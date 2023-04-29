@@ -82,11 +82,7 @@ def listenLoop(ser):
 			if header == 'HB':
 				CLIENT_IP = indata.split()[1]
 				print(f'client ip: {CLIENT_IP}')
-				if thread_cli.do_run:
-					thread_cli.do_run = False
-					thread_cli.join()
-					thread_cli = threading.Thread(target=aliveSignal, args=(client, (CLIENT_IP, OUT_PORT)))
-					thread_cli.start()
+				
 					
 			# handle indata
 		except:
