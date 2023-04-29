@@ -30,7 +30,7 @@ def aliveSignal():
 		beat = 'alive ' + BOAT_NAME
 		client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
 		time.sleep(1)
-		print(f'client ip: {CLIENT_IP}')
+		print(f'client ip: {getattr(t, "Client_ip", "102.168.0.1")}')
 
 def createPipelines():
 	_pipelines = []
@@ -81,7 +81,7 @@ def listenLoop(ser):
 			#print(f'message from: {str(addr)}, data: {indata}')
 			header = indata.split()[0]
 			if header == 'HB':
-				CLIENT_IP = indata.split()[1]
+				thread_cli.Client_ip = indata.split()[1]
 				
 				
 					
@@ -176,6 +176,9 @@ lock = threading.Lock()
 
 thread_cli = threading.Thread(target=aliveSignal)
 thread_ser = threading.Thread(target=listenLoop, args=(server,))
+
+threa_cli.Client_ip = "192.168.0.1"
+
 thread_cli.start()
 thread_ser.start()
 
