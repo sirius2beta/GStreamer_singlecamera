@@ -4,6 +4,7 @@ import os
 import subprocess
 import time
 import threading
+import socket
 
 gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GLib, GObject
