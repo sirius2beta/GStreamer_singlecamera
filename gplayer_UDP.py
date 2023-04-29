@@ -23,12 +23,12 @@ pipelines = []
 pipelines_state = []
 cameraformat = []
 
-def aliveSignal(cli, to_addr):
+def aliveSignal():
 	print('client started...')
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
 		beat = 'alive ' + BOAT_NAME
-		cli.sendto(beat.encode(),to_addr)
+		client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
 		time.sleep(1)
 
 def createPipelines():
@@ -173,7 +173,7 @@ print(f'send message to {CLIENT_IP}, Port: {IN_PORT}')
 
 lock = threading.Lock()
 
-thread_cli = threading.Thread(target=aliveSignal, args=(client, (CLIENT_IP, OUT_PORT)))
+thread_cli = threading.Thread(target=aliveSignal)
 thread_ser = threading.Thread(target=listenLoop, args=(server,))
 thread_cli.start()
 thread_ser.start()
