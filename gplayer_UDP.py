@@ -30,7 +30,6 @@ def aliveSignal():
 		beat = 'alive ' + BOAT_NAME
 		client.sendto(beat.encode(),(thread_cli.Client_ip,OUT_PORT))
 		time.sleep(1)
-		print(f'client ip: {thread_cli.Client_ip}')
 
 def createPipelines():
 	_pipelines = []
