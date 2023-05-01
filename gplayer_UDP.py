@@ -60,7 +60,7 @@ def get_video_format():
 			except:
 				continue
 			line_list = returned_value.splitlines()
-			print(line_list[0])
+			print(line_list[1])
 			new_line_list = list()
 			for j in line_list:
 				if len(j.split()) == 0:
@@ -73,6 +73,7 @@ def get_video_format():
 				elif j.split()[0] == 'Interval:':
 					camera_format.append('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
 					print('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
+				print(j[1])
 	return camera_format
 
 def listenLoop(ser):
