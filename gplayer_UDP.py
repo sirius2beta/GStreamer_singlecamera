@@ -55,7 +55,7 @@ def get_video_format():
 	for i in range(0,5):
 			try:
 				cmd = "v4l2-ctl -d /dev/video{} --list-formats-ext".format(i)
-				returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
+				returned_value = subprocess.check_output(cmd,shell=True).replace(b'\t',b'').decode("utf-8")  # returns the exit code in unix
 				print(returned_value)
 			except:
 				continue
