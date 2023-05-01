@@ -24,11 +24,13 @@ pipelines_state = []
 cameraformat = []
 
 def aliveSignal():
+	golbal CLIENT_IP
 	print('client started...')
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
 		beat = 'alive ' + BOAT_NAME
-		client.sendto(beat.encode(),(thread_cli.Client_ip,OUT_PORT))
+		#client.sendto(beat.encode(),(thread_cli.Client_ip,OUT_PORT))
+		client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
 		time.sleep(1)
 
 def createPipelines():
@@ -80,7 +82,8 @@ def listenLoop(ser):
 			#print(f'message from: {str(addr)}, data: {indata}')
 			header = indata.split()[0]
 			if header == 'HB':
-				thread_cli.Client_ip = indata.split()[1]
+				#thread_cli.Client_ip = indata.split()[1]
+				CLIENT_IP = indata.split()[1]
 				
 				
 					
