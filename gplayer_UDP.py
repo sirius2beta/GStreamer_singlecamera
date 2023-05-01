@@ -56,7 +56,7 @@ def get_video_format():
 				returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
 			except:
 				continue
-			line_list = returned_value.split('\n')
+			line_list = returned_value.split(b'\n')
 			new_line_list = list()
 			for j in line_list:
 				if len(j.split()) == 0:
