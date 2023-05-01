@@ -24,7 +24,7 @@ pipelines_state = []
 cameraformat = []
 
 def aliveSignal():
-	golbal CLIENT_IP
+	global CLIENT_IP
 	print('client started...')
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
@@ -73,6 +73,7 @@ def get_video_format():
 	return camera_format
 
 def listenLoop(ser):
+	global CLIENT_IP
 	print('server started...')
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
