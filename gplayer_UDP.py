@@ -95,8 +95,9 @@ def listenLoop(ser):
 
 				client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
 			if header == 'cmd':
-				
+				print("cmd")
 			if header == 'quit':
+				print("quit")
 				
 				
 					
