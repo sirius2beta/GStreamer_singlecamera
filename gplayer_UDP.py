@@ -24,11 +24,13 @@ pipelines_state = []
 cameraformat = []
 
 def aliveSignal():
+	global CLIENT_IP
 	print('client started...')
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
 		beat = 'alive ' + BOAT_NAME
-		client.sendto(beat.encode(),(thread_cli.Client_ip,OUT_PORT))
+		#client.sendto(beat.encode(),(thread_cli.Client_ip,OUT_PORT))
+		client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
 		time.sleep(1)
 
 def createPipelines():
@@ -56,7 +58,7 @@ def get_video_format():
 				returned_value = subprocess.check_output(cmd,shell=True)  # returns the exit code in unix
 			except:
 				continue
-			line_list = returned_value.split(b'\n')
+			line_list = returned_value.split("\n")
 			new_line_list = list()
 			for j in line_list:
 				if len(j.split()) == 0:
@@ -71,16 +73,30 @@ def get_video_format():
 	return camera_format
 
 def listenLoop(ser):
+	global CLIENT_IP
+	global OUT_PORT
 	print('server started...')
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
 		try:
 			indata, addr = server.recvfrom(1024)
 			indata = indata.decode()
+			
 			#print(f'message from: {str(addr)}, data: {indata}')
 			header = indata.split()[0]
+			
+			print(header)
 			if header == 'HB':
-				thread_cli.Client_ip = indata.split()[1]
+				#thread_cli.Client_ip = indata.split()[1]
+				CLIENT_IP = indata.split()[1]
+			
+			if header == 'qformat':
+				msg = BOAT_NAME+' format '+'\n'+'\n'.join(cameraformat)
+
+				client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
+			if header == 'cmd':
+				
+			if header == 'quit':
 				
 				
 					
