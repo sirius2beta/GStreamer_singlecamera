@@ -95,7 +95,7 @@ def listenLoop(ser):
 
 				client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
 			if header == 'cmd':
-				video, form, videosize, mid, quility, ip, port = str(msg.payload).split()[1:]
+				video, form, videosize, mid, quility, ip, port = indata.split()[1:]
 				width, height, framerate = videosize.split('-')
 				if form == 'YUYV':
 					gform = 'YUY2'
@@ -120,7 +120,7 @@ def listenLoop(ser):
 						pipelines[videoindex].set_state(Gst.State.PLAYING)
 					pipelines_state[videoindex] = True
 			if header == 'quit':
-				video = int(str(msg.payload).split()[1][5:])
+				video = int(indata.split()[1][5:])
 				if video in pipelinesexist:
 					videoindex = pipelinesexist.index(video)
 					pipelines[videoindex].set_state(Gst.State.NULL)
