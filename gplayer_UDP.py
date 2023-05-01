@@ -59,7 +59,7 @@ def get_video_format():
 				print(returned_value)
 			except:
 				continue
-			line_list = returned_value.split(b'\n|\t')
+			line_list = returned_value.splitlines()
 			print(line_list[0])
 			new_line_list = list()
 			for j in line_list:
