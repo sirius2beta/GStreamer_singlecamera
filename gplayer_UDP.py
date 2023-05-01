@@ -74,17 +74,58 @@ def get_video_format():
 
 def listenLoop(ser):
 	global CLIENT_IP
+	global OUT_PORT
 	print('server started...')
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
 		try:
 			indata, addr = server.recvfrom(1024)
 			indata = indata.decode()
+			
 			#print(f'message from: {str(addr)}, data: {indata}')
 			header = indata.split()[0]
+			
+			print(header)
 			if header == 'HB':
 				#thread_cli.Client_ip = indata.split()[1]
 				CLIENT_IP = indata.split()[1]
+			
+			if header == 'qformat':
+				msg = BOAT_NAME+' format '+'\n'+'\n'.join(cameraformat)
+
+				client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
+			if header == 'cmd':
+				video, form, videosize, mid, quility, ip, port = str(msg.payload).split()[1:]
+				width, height, framerate = videosize.split('-')
+				if form == 'YUYV':
+					gform = 'YUY2'
+				if("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate) not in cameraformat):
+					print('format error')
+				else:
+					gstring = 'v4l2src device=/dev/'+video 
+					gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(gform,width,height,framerate)
+					if mid != 'nan':
+						gstring += (mid+' ! ')
+					gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
+					print(gstring)
+					videoindex = pipelinesexist.index(int(video[5:]))
+
+					if pipelines_state[videoindex] == True:
+						pipelines[videoindex].set_state(Gst.State.NULL)
+						pipelines[videoindex] = Gst.parse_launch(gstring)
+						pipelines[videoindex].set_state(Gst.State.PLAYING)
+
+					else:
+						pipelines[videoindex] = Gst.parse_launch(gstring)
+						pipelines[videoindex].set_state(Gst.State.PLAYING)
+					pipelines_state[videoindex] = True
+			if header == 'quit':
+				video = int(str(msg.payload).split()[1][5:])
+				if video in pipelinesexist:
+					videoindex = pipelinesexist.index(video)
+					pipelines[videoindex].set_state(Gst.State.NULL)
+					pipelines_state[videoindex] = False
+					print("quit : video"+str(video))
 				
 				
 					
