@@ -156,6 +156,7 @@ def on_message(client, userdata, msg):
 			gform = 'YUY2'
 		if("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate) not in cameraformat):
 			print('format error')
+			print("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate)
 		else:
 			gstring = 'v4l2src device=/dev/'+video 
 			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(gform,width,height,framerate)
