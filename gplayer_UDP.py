@@ -70,6 +70,7 @@ def get_video_format():
 					width, height = size.split('x')
 				elif j.split()[0] == 'Interval:':
 					camera_format.append('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
+					print('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
 	return camera_format
 
 def listenLoop(ser):
@@ -101,6 +102,7 @@ def listenLoop(ser):
 					gform = 'YUY2'
 				if("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate) not in cameraformat):
 					print('format error')
+					print("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate))
 				else:
 					gstring = 'v4l2src device=/dev/'+video 
 					gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(gform,width,height,framerate)
