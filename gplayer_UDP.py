@@ -60,6 +60,7 @@ def get_video_format():
 			except:
 				continue
 			line_list = returned_value.split()
+			print(line_list[0])
 			new_line_list = list()
 			for j in line_list:
 				if len(j.split()) == 0:
