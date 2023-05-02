@@ -91,6 +91,7 @@ def listenLoop(ser):
 				CLIENT_IP = indata.split()[1]
 			
 			if header == 'qformat':
+				print("format")
 				msg = ' format '+'\n'+'\n'.join(cameraformat)
 
 				client.sendto(msg.encode(),(CLIENT_IP,FORMAT_PORT))
