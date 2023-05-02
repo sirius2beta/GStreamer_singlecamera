@@ -29,7 +29,6 @@ def aliveSignal():
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
 		beat = 'alive ' + BOAT_NAME
-		#client.sendto(beat.encode(),(thread_cli.Client_ip,OUT_PORT))
 		client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
 		time.sleep(1)
 
@@ -71,7 +70,6 @@ def get_video_format():
 				elif j.split()[0] == 'Interval:':
 					camera_format.append('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
 					print('video{} {} width={} height={} framerate={}'.format(i,form, width, height , j.split()[3][1:].split('.')[0]))
-				print(j[1])
 	return camera_format
 
 def listenLoop(ser):
@@ -86,8 +84,7 @@ def listenLoop(ser):
 			
 			#print(f'message from: {str(addr)}, data: {indata}')
 			header = indata.split()[0]
-			
-			print(header)
+
 			if header == 'HB':
 				#thread_cli.Client_ip = indata.split()[1]
 				CLIENT_IP = indata.split()[1]
