@@ -105,7 +105,7 @@ def listenLoop(ser):
 			quality, ip, port = indata.split()[6:]
 			print(quality, ip, port)
 
-			if(cformat not in cameraformat):
+			if(' '.join(cformat) not in cameraformat):
 				print('format error')
 			else:
 				if cformat[1] == 'YUYV':
