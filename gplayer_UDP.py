@@ -118,7 +118,7 @@ def listenLoop(ser):
 					gstring += (mid+' ! ')
 					gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
 					print(gstring)
-					videoindex = pipelinesexist.index(int(video[5:]))
+					videoindex = pipelinesexist.index(int(cformat[1][5:]))
 
 				if pipelines_state[videoindex] == True:
 					pipelines[videoindex].set_state(Gst.State.NULL)
