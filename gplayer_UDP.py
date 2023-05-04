@@ -92,7 +92,7 @@ def listenLoop(ser):
 			
 			if header == 'qformat':
 				print("format")
-				msg = 'format '+'Charlie'+'\n'.join(cameraformat)
+				msg = 'format '+'Charlie\n'+'\n'.join(cameraformat)
 
 				client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
 			if header == 'cmd':
