@@ -103,7 +103,7 @@ def listenLoop(ser):
 				print("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate))
 			else:
 				if cformat[1] == 'YUYV':
-				cformat[1] = 'YUY2'
+					cformat[1] = 'YUY2'
 
 				gstring = 'v4l2src device=/dev/'+cformat[0]
 
