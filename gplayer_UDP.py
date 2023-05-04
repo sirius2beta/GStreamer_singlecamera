@@ -99,8 +99,8 @@ def listenLoop(ser):
 			client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
 		if header == 'cmd':
 			print("cmd")
-
-			cformat = indata.split()[1:5]
+			print(indata)
+			cformat = indata.split()[1:6]
 			print(cformat)
 			quality, ip, port = indata.split()[6:]
 			print(quality, ip, port)
