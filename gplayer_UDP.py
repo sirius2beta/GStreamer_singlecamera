@@ -120,15 +120,15 @@ def listenLoop(ser):
 					print(gstring)
 					videoindex = pipelinesexist.index(int(cformat[1][5:]))
 
-				if pipelines_state[videoindex] == True:
-					pipelines[videoindex].set_state(Gst.State.NULL)
-					pipelines[videoindex] = Gst.parse_launch(gstring)
-					pipelines[videoindex].set_state(Gst.State.PLAYING)
+					if pipelines_state[videoindex] == True:
+						pipelines[videoindex].set_state(Gst.State.NULL)
+						pipelines[videoindex] = Gst.parse_launch(gstring)
+						pipelines[videoindex].set_state(Gst.State.PLAYING)
 
-				else:
-					pipelines[videoindex] = Gst.parse_launch(gstring)
-					pipelines[videoindex].set_state(Gst.State.PLAYING)
-					pipelines_state[videoindex] = True
+					else:
+						pipelines[videoindex] = Gst.parse_launch(gstring)
+						pipelines[videoindex].set_state(Gst.State.PLAYING)
+						pipelines_state[videoindex] = True
 		if header == 'quit':
 			video = int(indata.split()[1][5:])
 			if video in pipelinesexist:
