@@ -31,7 +31,7 @@ def aliveSignal():
 		beat = 'alive ' + BOAT_NAME
 		client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
 		time.sleep(1)
-		print(f"send to: {CLIENT_IP}:{OUT_PORT}")
+		//print(f"send to: {CLIENT_IP}:{OUT_PORT}")
 
 def createPipelines():
 	_pipelines = []
@@ -97,8 +97,11 @@ def listenLoop(ser):
 				client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
 			if header == 'cmd':
 				print("cmd")
+				
 				cformat = str(msg.payload).split()[1:5]
-				quility, ip, port = str(msg.payload).split()[6:]
+				print(cformat)
+				quality, ip, port = str(msg.payload).split()[6:]
+				print(quality, ip, port)
 		
 				if(cformat not in cameraformat):
 					print('format error')
