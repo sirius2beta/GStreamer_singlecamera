@@ -97,7 +97,8 @@ def listenLoop(ser):
 				client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
 			if header == 'cmd':
 				print("cmd")
-				cformat, quility, ip, port = str(msg.payload).split()[1:]
+				cformat = str(msg.payload).split()[1:5]
+				quility, ip, port = str(msg.payload).split()[6:]
 		
 				if(cformat not in cameraformat):
 					print('format error')
