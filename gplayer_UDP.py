@@ -120,7 +120,7 @@ def listenLoop(ser):
 				print(gstring)
 				print(cformat[1])
 				print(cformat[1][5:])
-				videoindex = pipelinesexist.index(int(cformat[1][5:]))
+				videoindex = pipelinesexist.index(int(cformat[0][5:]))
 				
 
 				if pipelines_state[videoindex] == True:
