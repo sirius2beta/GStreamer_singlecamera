@@ -108,13 +108,16 @@ def listenLoop(ser):
 			if(' '.join(cformat) not in cameraformat):
 				print('format error')
 			else:
+				gstring = 'v4l2src device=/dev/'+cformat[0]
 				if cformat[1] == 'YUYV':
 					cformat[1] = 'YUY2'
+					gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(cformat[1],cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
+				elif cformat[1] == 'MJPG':
+					gstring += ' num-buffers=-1 ! image/jpeg,width={},height={},framerate={}/1 ! '.format(cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
+				else:
+					gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(cformat[1],cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
 
-				gstring = 'v4l2src device=/dev/'+cformat[0]
-
-				gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(cformat[1],cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
-				if mid != 'nan':
+								if mid != 'nan':
 					gstring += (mid+' ! ')
 				gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
 				print(gstring)
