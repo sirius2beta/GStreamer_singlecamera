@@ -102,7 +102,7 @@ def listenLoop(ser):
 			print(indata)
 			cformat = indata.split()[1:6]
 			print(cformat)
-			quality, ip, port = indata.split()[6:]
+			mid, quality, ip, port = indata.split()[6:]
 			print(quality, ip, port)
 
 			if(' '.join(cformat) not in cameraformat):
