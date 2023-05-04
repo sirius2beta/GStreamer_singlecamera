@@ -16,7 +16,6 @@ PC_IP='192.168.0.0'
 SERVER_IP = ''
 CLIENT_IP = '100.117.209.0' #PC IP
 OUT_PORT = 50008
-FORMAT_PORT = 50009
 IN_PORT = 50007 
 
 pipelinesexist = []
@@ -95,7 +94,7 @@ def listenLoop(ser):
 				print("format")
 				msg = 'format '+'Charlie'+'\n'.join(cameraformat)
 
-				client.sendto(msg.encode(),(CLIENT_IP,FORMAT_PORT))
+				client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
 			if header == 'cmd':
 				video, form, videosize, mid, quility, ip, port = indata.split()[1:]
 				width, height, framerate = videosize.split('-')
