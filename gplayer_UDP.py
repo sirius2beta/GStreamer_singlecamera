@@ -116,19 +116,19 @@ def listenLoop(ser):
 				gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(cformat[1],cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
 				if mid != 'nan':
 					gstring += (mid+' ! ')
-					gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
-					print(gstring)
-					videoindex = pipelinesexist.index(int(cformat[1][5:]))
+				gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
+				print(gstring)
+				videoindex = pipelinesexist.index(int(cformat[1][5:]))
 
-					if pipelines_state[videoindex] == True:
-						pipelines[videoindex].set_state(Gst.State.NULL)
-						pipelines[videoindex] = Gst.parse_launch(gstring)
-						pipelines[videoindex].set_state(Gst.State.PLAYING)
+				if pipelines_state[videoindex] == True:
+					pipelines[videoindex].set_state(Gst.State.NULL)
+					pipelines[videoindex] = Gst.parse_launch(gstring)
+					pipelines[videoindex].set_state(Gst.State.PLAYING)
 
-					else:
-						pipelines[videoindex] = Gst.parse_launch(gstring)
-						pipelines[videoindex].set_state(Gst.State.PLAYING)
-						pipelines_state[videoindex] = True
+				else:
+					pipelines[videoindex] = Gst.parse_launch(gstring)
+					pipelines[videoindex].set_state(Gst.State.PLAYING)
+					pipelines_state[videoindex] = True
 		if header == 'quit':
 			video = int(indata.split()[1][5:])
 			if video in pipelinesexist:
