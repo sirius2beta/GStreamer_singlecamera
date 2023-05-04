@@ -117,7 +117,7 @@ def listenLoop(ser):
 				else:
 					gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(cformat[1],cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
 
-								if mid != 'nan':
+				if mid != 'nan':
 					gstring += (mid+' ! ')
 				gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
 				print(gstring)
