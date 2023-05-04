@@ -147,48 +147,7 @@ def on_connect(client, userdata, flags, rc):
 	aliveThread.start()
 
 # The callback for when a PUBLISH message is received from the server.
-def on_message(client, userdata, msg):
-	print(msg.topic+" "+str(msg.payload))
-	head = str(msg.payload).split()[0]
-	print(head)
-	if head == 'qformat':
-		client.publish(GROUND_NAME, BOAT_NAME+' format '+'\n'+'\n'.join(cameraformat))
-	if head == 'cmd':
-		cformat, quility, ip, port = str(msg.payload).split()[1:]
-		width, height, framerate = videosize.split('-')
-		
-		if(cformat not in cameraformat):
-			print('format error')
-			print("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate))
-		else:
-			if cformat[1] == 'YUYV':
-			cformat[1] = 'YUY2'
-			
-			gstring = 'v4l2src device=/dev/'+cformat[0]
-			
-			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(cformat[1],cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
-			if mid != 'nan':
-				gstring += (mid+' ! ')
-			gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
-			print(gstring)
-			videoindex = pipelinesexist.index(int(video[5:]))
-			
-			if pipelines_state[videoindex] == True:
-				pipelines[videoindex].set_state(Gst.State.NULL)
-				pipelines[videoindex] = Gst.parse_launch(gstring)
-				pipelines[videoindex].set_state(Gst.State.PLAYING)
-				
-			else:
-				pipelines[videoindex] = Gst.parse_launch(gstring)
-				pipelines[videoindex].set_state(Gst.State.PLAYING)
-			pipelines_state[videoindex] = True
-	if head == 'quit':
-		video = int(str(msg.payload).split()[1][5:])
-		if video in pipelinesexist:
-			videoindex = pipelinesexist.index(video)
-			pipelines[videoindex].set_state(Gst.State.NULL)
-			pipelines_state[videoindex] = False
-			print("quit : video"+str(video))
+
 
 
 GObject.threads_init()
