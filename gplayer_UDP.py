@@ -79,9 +79,11 @@ def listenLoop(ser):
 	print('server started...')
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
-		
-		indata, addr = server.recvfrom(1024)
-		indata = indata.decode()
+		try:
+			indata, addr = server.recvfrom(1024)
+			indata = indata.decode()
+		except:
+			continue
 
 		#print(f'message from: {str(addr)}, data: {indata}')
 		header = indata.split()[0]
