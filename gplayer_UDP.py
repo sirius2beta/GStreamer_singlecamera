@@ -96,19 +96,22 @@ def listenLoop(ser):
 
 				client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
 			if header == 'cmd':
-				video, form, videosize, mid, quility, ip, port = indata.split()[1:]
-				width, height, framerate = videosize.split('-')
-				if form == 'YUYV':
-					gform = 'YUY2'
-				if("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate) not in cameraformat):
-					print('format error')
-					print("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate))
-				else:
-					gstring = 'v4l2src device=/dev/'+video 
-					gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(gform,width,height,framerate)
+				cformat, quility, ip, port = str(msg.payload).split()[1:]
+		width, height, framerate = videosize.split('-')
+		
+		if(cformat not in cameraformat):
+			print('format error')
+			print("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate))
+		else:
+			if cformat[1] == 'YUYV':
+			cformat[1] = 'YUY2'
+			
+			gstring = 'v4l2src device=/dev/'+cformat[0]
+			
+			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(cformat[1],cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
 					if mid != 'nan':
 						gstring += (mid+' ! ')
-					gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
+					gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
 					print(gstring)
 					videoindex = pipelinesexist.index(int(video[5:]))
 
@@ -152,16 +155,19 @@ def on_message(client, userdata, msg):
 	if head == 'qformat':
 		client.publish(GROUND_NAME, BOAT_NAME+' format '+'\n'+'\n'.join(cameraformat))
 	if head == 'cmd':
-		video, form, videosize, mid, quility, ip, port = str(msg.payload).split()[1:]
+		cformat, quility, ip, port = str(msg.payload).split()[1:]
 		width, height, framerate = videosize.split('-')
-		if form == 'YUYV':
-			gform = 'YUY2'
-		if("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate) not in cameraformat):
+		
+		if(cformat not in cameraformat):
 			print('format error')
 			print("{} {} width={} height={} framerate={}".format(video, form, width, height, framerate))
 		else:
-			gstring = 'v4l2src device=/dev/'+video 
-			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(gform,width,height,framerate)
+			if cformat[1] == 'YUYV':
+			cformat[1] = 'YUY2'
+			
+			gstring = 'v4l2src device=/dev/'+cformat[0]
+			
+			gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(cformat[1],cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
 			if mid != 'nan':
 				gstring += (mid+' ! ')
 			gstring +='jpegenc quality=80 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
