@@ -84,7 +84,7 @@ def listenLoop(ser):
 			indata, addr = server.recvfrom(1024)
 			indata = indata.decode()
 			
-			#print(f'message from: {str(addr)}, data: {indata}')
+			print(f'message from: {str(addr)}, data: {indata}')
 			header = indata.split()[0]
 
 			if header == 'HB':
