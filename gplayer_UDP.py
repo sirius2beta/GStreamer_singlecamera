@@ -85,7 +85,7 @@ def listenLoop(ser):
 		except:
 			continue
 
-		#print(f'message from: {str(addr)}, data: {indata}')
+		print(f'message from: {str(addr)}, data: {indata}')
 		header = indata.split()[0]
 
 		if header == 'HB':
