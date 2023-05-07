@@ -24,6 +24,7 @@ pipelines_state = []
 cameraformat = []
 
 def aliveSignal():
+	global BOAT_NAME
 	global CLIENT_IP
 	print('client started...')
 	t = threading.current_thread()
@@ -74,6 +75,8 @@ def get_video_format():
 	return camera_format
 
 def listenLoop(ser):
+	
+	global BOAT_NAME
 	global CLIENT_IP
 	global OUT_PORT
 	print('server started...')
@@ -91,10 +94,11 @@ def listenLoop(ser):
 		if header == 'HB':
 			#thread_cli.Client_ip = indata.split()[1]
 			CLIENT_IP = indata.split()[1]
+			BOAT_NAME = indata.split()[2]
 
 		if header == 'qformat':
 			print("format")
-			msg = 'format '+'Charlie\n'+'\n'.join(cameraformat)
+			msg = 'format '+BOAT_NAME+'\n'+'\n'.join(cameraformat)
 
 			client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
 		if header == 'cmd':
