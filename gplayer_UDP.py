@@ -101,11 +101,10 @@ def listenLoop(ser):
 			
 			BOAT_NAME = indata.split()[2]
 			primary = indata.split()[3]
-			if(primary == 'P'){
+			if primary == 'P':
 				CLIENT_IP = indata.split()[1]
-			}else{
+			else:
 				S_CLIENT_IP = indata.split()[1]
-			}
 
 		if header == 'qformat':
 			print("format")
