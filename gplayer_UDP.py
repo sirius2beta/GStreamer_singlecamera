@@ -15,6 +15,7 @@ GROUND_NAME = 'ground1'
 PC_IP='192.168.0.0'
 SERVER_IP = ''
 CLIENT_IP = '100.117.209.0' #PC IP
+S_CLIENT_IP = '100.100.100.11 
 OUT_PORT = 50008
 IN_PORT = 50007 
 
@@ -26,12 +27,15 @@ cameraformat = []
 def aliveSignal():
 	global BOAT_NAME
 	global CLIENT_IP
+	global S_CLIENT_IP
 	print('client started...')
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
 		beat = 'alive ' + BOAT_NAME
 		client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
-		time.sleep(1)
+		time.sleep(0.5)
+		client.sendto(beat.encode(),(S_CLIENT_IP,OUT_PORT))
+		time.sleep(0.5)
 		print(f"send to: {CLIENT_IP}:{OUT_PORT}")
 
 def createPipelines():
@@ -78,6 +82,7 @@ def listenLoop(ser):
 	
 	global BOAT_NAME
 	global CLIENT_IP
+	global S_CLIENT_IP
 	global OUT_PORT
 	print('server started...')
 	t = threading.current_thread()
@@ -93,8 +98,14 @@ def listenLoop(ser):
 
 		if header == 'HB':
 			#thread_cli.Client_ip = indata.split()[1]
-			CLIENT_IP = indata.split()[1]
+			
 			BOAT_NAME = indata.split()[2]
+			primary = indata.split()[3]
+			if(primary == 'P'){
+				CLIENT_IP = indata.split()[1]
+			}else{
+				S_CLIENT_IP = indata.split()[1]
+			}
 
 		if header == 'qformat':
 			print("format")
