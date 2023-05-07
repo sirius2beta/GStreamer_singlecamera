@@ -111,6 +111,7 @@ def listenLoop(ser):
 			msg = 'format '+BOAT_NAME+'\n'+'\n'.join(cameraformat)
 
 			client.sendto(msg.encode(),(CLIENT_IP,OUT_PORT))
+			client.sendto(msg.encode(),(S_CLIENT_IP,OUT_PORT))
 		if header == 'cmd':
 			print("cmd")
 			print(indata)
