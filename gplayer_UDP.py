@@ -14,8 +14,8 @@ GROUND_NAME = 'ground1'
 
 PC_IP='10.10.10.205'
 SERVER_IP = ''
-CLIENT_IP = '192.168.0.10' #PC IP
-S_CLIENT_IP = '100.100.100.11'
+CLIENT_IP = '127.0.0.1' #PC IP
+S_CLIENT_IP = '127.0.0.1'
 OUT_PORT = 50008
 IN_PORT = 50007 
 
@@ -32,11 +32,18 @@ def aliveSignal():
 	t = threading.current_thread()
 	while getattr(t, "do_run", True):
 		beat = 'alive ' + BOAT_NAME
-		client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
-		time.sleep(0.5)
-		client.sendto(beat.encode(),(S_CLIENT_IP,OUT_PORT))
-		time.sleep(0.5)
-		print(f"send to: {CLIENT_IP}:{OUT_PORT}")
+		try:
+			client.sendto(beat.encode(),(CLIENT_IP,OUT_PORT))
+			time.sleep(0.5)
+			print(f"Primary send to: {CLIENT_IP}:{OUT_PORT}")
+		except:
+			print(f"Primary unreached: {CLIENT_IP}:{OUT_PORT}")
+		try:
+			client.sendto(beat.encode(),(S_CLIENT_IP,OUT_PORT))
+			time.sleep(0.5)
+			print(f"Secondarysend to: {S_CLIENT_IP}:{OUT_PORT}")
+		except:
+			print(f"Secondary unreached: {S_CLIENT_IP}:{OUT_PORT}")
 
 def createPipelines():
 	_pipelines = []
