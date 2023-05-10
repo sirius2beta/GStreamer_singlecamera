@@ -143,7 +143,7 @@ def listenLoop(ser):
                                                 gstring += (mid+' ! ')
                                         gstring +='jpegparse ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 				elif cformat[1] == 'GREY':
-					gstring += ' num-buffers=-1 ! image/GREY8 ! videoscale ! videoconvert !  video/x-raw, format=YUY2, width=160,height=120 ! '
+					gstring += ' num-buffers=-1 ! video/x-raw,format=GRAY8 ! videoscale ! videoconvert ! video/x-raw, format=YUY2, width=640,height=480 ! videoconvert !  '
 					if mid != 'nan':
 						gstring += (mid+' ! ')
 					gstring +='jpegenc ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
