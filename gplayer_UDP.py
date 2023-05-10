@@ -12,7 +12,7 @@ from gi.repository import Gst, GLib, GObject
 BOAT_NAME = 'usv1'
 GROUND_NAME = 'ground1'
 
-PC_IP='192.168.0.0'
+PC_IP='10.10.10.205'
 SERVER_IP = ''
 CLIENT_IP = '10.10.10.204' #PC IP
 S_CLIENT_IP = '100.100.100.11'
