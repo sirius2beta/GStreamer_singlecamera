@@ -121,9 +121,9 @@ def listenLoop(ser):
 		if header == 'cmd':
 			print("cmd")
 			print(indata)
-			cformat = indata.split()[1:6]
+			cformat = indata.split()[1:7]
 			print(cformat)
-			mid, quality, ip, port = indata.split()[6:]
+			mid, quality, ip, port = indata.split()[7:]
 			print(quality, ip, port)
 
 			if(' '.join(cformat) not in cameraformat):
