@@ -121,9 +121,10 @@ def listenLoop(ser):
 		if header == 'cmd':
 			print("cmd")
 			print(indata)
-			cformat = indata.split()[1:7]
+			cformat = indata.split()[1:6]
+			
 			print(cformat)
-			mid, quality, ip, port = indata.split()[7:]
+			encoder, mid, quality, ip, port = indata.split()[6:]
 			print(quality, ip, port)
 
 			if(' '.join(cformat) not in cameraformat):
@@ -135,7 +136,7 @@ def listenLoop(ser):
 					gstring += ' num-buffers=-1 ! video/x-raw,format={},width={},height={},framerate={}/1 ! '.format(cformat[1],cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
 					if mid != 'nan':
 						gstring += (mid+' ! ')
-					if cformat[5] == 'h264':
+					if encoder == 'h264':
 						gstring +=' videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(quality,ip, port)
 						
 					else:
