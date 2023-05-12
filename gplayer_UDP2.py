@@ -146,10 +146,10 @@ def listenLoop(ser):
                                         if mid != 'nan':
                                                 gstring += (mid+' ! ')
 						
-					if encoder == 'h264':
-						gstring +=' jpegparse ! jpegdec ! videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
-					else:
-						gstring +='jpegparse ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
+					#if encoder == 'h264':
+					#	gstring +=' jpegparse ! jpegdec ! videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
+					#else:
+					#	gstring +='jpegparse ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 				elif cformat[1] == 'GREY':
 					gstring += ' num-buffers=-1 ! video/x-raw,format=GRAY8 ! videoscale ! videoconvert ! video/x-raw, format=YUY2, width=640,height=480 ! videoconvert !  '
 					if mid != 'nan':
