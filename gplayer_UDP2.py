@@ -137,22 +137,10 @@ def listenLoop(ser):
 					if mid != 'nan':
 						gstring += (mid+' ! ')
 					if encoder == 'h264':
-						gstring +=' videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
-						
+						gstring +=' videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)	
 					else:
 						gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
-				elif cformat[1] == 'MJPG':
-                                        gstring += ' num-buffers=-1 ! image/jpeg,width={},height={},framerate={}/1 ! '.format(cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
-                                        if encoder == 'h264':
-                                                gstring += ' jpegparse ! jpegdec ! videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
-					else:
-						gstring +='jpegparse ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
-					#if encoder == 'h264':
-					#	gstring +=
-					#
-					#	gstring +=' jpegparse ! jpegdec ! videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
-					#else:
-					#	
+					
 				elif cformat[1] == 'GREY':
 					gstring += ' num-buffers=-1 ! video/x-raw,format=GRAY8 ! videoscale ! videoconvert ! video/x-raw, format=YUY2, width=640,height=480 ! videoconvert !  '
 					if mid != 'nan':
@@ -162,6 +150,12 @@ def listenLoop(ser):
 					
 					else:
 						gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
+				elif cformat[1] == 'MJPG':
+                                        gstring += ' num-buffers=-1 ! image/jpeg,width={},height={},framerate={}/1 ! '.format(cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
+                                        if encoder == 'h264':
+                                                gstring += ' jpegparse ! jpegdec ! videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
+					else:
+						gstring +='jpegparse ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 				else:
 					if cformat[1] == 'RGBP':
 						cformat[1] = 'RGB16'
