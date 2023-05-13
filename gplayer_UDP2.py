@@ -139,7 +139,7 @@ def listenLoop(ser):
 					if encoder == 'h264':
 						gstring +=' videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)	
 					else:
-						gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
+						gstring +='jpegenc quality=30 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 				elif cformat[1] == 'MJPG':
 					gstring += ' num-buffers=-1 ! image/jpeg,width={},height={},framerate={}/1 ! '.format(cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
 					if mid != 'nan':
@@ -147,7 +147,7 @@ def listenLoop(ser):
 					if encoder == 'h264':
 						gstring +=' jpegparse ! jpegdec ! videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)	
 					else:
-						gstring +='jpegparse ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
+						gstring +='jpegparse ! jpegdec ! jpegenc quality=30 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 					
 				elif cformat[1] == 'GREY':
 					gstring += ' num-buffers=-1 ! video/x-raw,format=GRAY8 ! videoscale ! videoconvert ! video/x-raw, format=YUY2, width=640,height=480 ! '
@@ -157,7 +157,7 @@ def listenLoop(ser):
 						gstring +='videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
 					
 					else:
-						gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
+						gstring +='jpegenc quality=30 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 				#elif cformat[1] == 'MJPG':
                                  #       gstring += ' num-buffers=-1 ! image/jpeg,width={},height={},framerate={}/1 ! '.format(cformat[2].split('=')[1],cformat[3].split('=')[1],cformat[4].split('=')[1])
                                   #      if encoder == 'h264':
@@ -178,7 +178,7 @@ def listenLoop(ser):
 						gstring +='videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
 						
 					else:
-						gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
+						gstring +='jpegenc quality=30 ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 
 				
 				print(gstring)
