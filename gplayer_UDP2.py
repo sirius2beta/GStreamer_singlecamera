@@ -150,11 +150,11 @@ def listenLoop(ser):
 						gstring +='jpegparse ! rtpjpegpay ! udpsink host={} port={}'.format(ip, port)
 					
 				elif cformat[1] == 'GREY':
-					gstring += ' num-buffers=-1 ! video/x-raw,format=GRAY8 ! videoscale ! videoconvert ! video/x-raw, format=YUY2, width=640,height=480 ! videoconvert !  '
+					gstring += ' num-buffers=-1 ! video/x-raw,format=GRAY8 ! videoscale ! videoconvert ! video/x-raw, format=YUY2, width=640,height=480 ! '
 					if mid != 'nan':
 						gstring += (mid+' ! ')
 					if encoder == 'h264':
-						gstring +=' jpegparse ! jpegdec ! videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
+						gstring +='videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
 					
 					else:
 						gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
@@ -171,11 +171,11 @@ def listenLoop(ser):
 						cformat[1] = 'BGR'
 					elif cformat[1] == 'Y1':
 						cformat[1] = 'UYVY'
-					gstring += ' num-buffers=-1 ! video/x-raw,format={}! videoscale ! videoconvert ! video/x-raw, format=YUY2, width=640,height=480 ! videoconvert ! '.format(cformat[1])
+					gstring += ' num-buffers=-1 ! video/x-raw,format={}! videoscale ! videoconvert ! video/x-raw, format=YUY2, width=640,height=480 ! '.format(cformat[1])
 					if mid != 'nan':
 						gstring += (mid+' ! ')
 					if encoder == 'h264':
-						gstring +=' videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
+						gstring +='videoconvert ! omxh264enc ! rtph264pay pt=96 config-interval=1 ! udpsink host={} port={}'.format(ip, port)
 						
 					else:
 						gstring +='jpegenc quality={} ! rtpjpegpay ! udpsink host={} port={}'.format(quality,ip, port)
